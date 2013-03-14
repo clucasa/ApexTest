@@ -1,0 +1,17 @@
+﻿Build started 3/9/2013 1:55:29 PM.
+     1>Project "E:\Zander\Dropbox\School\Senior Design\ApexTest\ApexTest\ApexTest\ApexTest\ApexTest.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         e:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt apex.cpp ApexParticles.cpp Main.cpp ZeusRenderResourceManager.cpp
+         apex.cpp
+     1>e:\zander\dropbox\school\senior design\apextest\apextest\apextest\apextest\physx\include\foundation/PxPreprocessor.h(315): fatal error C1189: #error :  Exactly one of NDEBUG and _DEBUG needs to be defined by preprocessor
+         ApexParticles.cpp
+     1>e:\zander\dropbox\school\senior design\apextest\apextest\apextest\apextest\physx\include\foundation/PxPreprocessor.h(315): fatal error C1189: #error :  Exactly one of NDEBUG and _DEBUG needs to be defined by preprocessor
+         Main.cpp
+     1>e:\zander\dropbox\school\senior design\apextest\apextest\apextest\apextest\physx\include\foundation/PxPreprocessor.h(315): fatal error C1189: #error :  Exactly one of NDEBUG and _DEBUG needs to be defined by preprocessor
+         ZeusRenderResourceManager.cpp
+     1>e:\zander\dropbox\school\senior design\apextest\apextest\apextest\apextest\physx\include\foundation/PxPreprocessor.h(315): fatal error C1189: #error :  Exactly one of NDEBUG and _DEBUG needs to be defined by preprocessor
+     1>Done Building Project "E:\Zander\Dropbox\School\Senior Design\ApexTest\ApexTest\ApexTest\ApexTest\ApexTest.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.03

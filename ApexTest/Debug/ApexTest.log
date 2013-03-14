@@ -1,0 +1,49 @@
+﻿Build started 3/8/2013 10:12:30 AM.
+     1>Project "Z:\Documents\ApexTest\ApexTest\ApexTest\ApexTest.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\ApexTest.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _ITERATOR_DEBUG_LEVEL=0 /D _MBCS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp apex.cpp
+         apex.cpp
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         Main.cpp
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Z:\Documents\ApexTest\ApexTest\Debug\ApexTest.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\ApexTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Z:\Documents\ApexTest\ApexTest\Debug\ApexTest.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Z:\Documents\ApexTest\ApexTest\Debug\ApexTest.lib" /MACHINE:X86 Debug\apex.obj
+         Debug\Main.obj
+         LINK : Z:\Documents\ApexTest\ApexTest\Debug\ApexTest.exe not found or not built by the last incremental link; performing full link
+     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>PhysX3ExtensionsCHECKED.lib(ExtCpuWorkerThread.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtCpuWorkerThread.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtD6Joint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtD6Joint.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtD6JointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtD6JointSolverPrep.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDefaultCpuDispatcher.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDefaultCpuDispatcher.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDefaultErrorCallback.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDefaultErrorCallback.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDefaultSimulationFilterShader.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDefaultSimulationFilterShader.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDistanceJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDistanceJoint.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDistanceJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDistanceJointSolverPrep.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtExtensions.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtExtensions.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtFixedJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtFixedJoint.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtFixedJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtFixedJointSolverPrep.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtJoint.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtMetaData.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtMetaData.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtPrismaticJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtPrismaticJoint.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtPrismaticJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtPrismaticJointSolverPrep.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtRevoluteJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtRevoluteJoint.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtRevoluteJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtRevoluteJointSolverPrep.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtRigidBodyExt.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtRigidBodyExt.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtSimpleFactory.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtSimpleFactory.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtSphericalJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtSphericalJoint.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtSphericalJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtSphericalJointSolverPrep.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtVisualDebugger.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtVisualDebugger.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(PxExtensionAutoGeneratedMetaDataObjects.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(PxExtensionAutoGeneratedMetaDataObjects.obj)' or at 'Z:\Documents\ApexTest\ApexTest\Debug\vc100.pdb'; linking object as if no debug info
+         ApexTest.vcxproj -> Z:\Documents\ApexTest\ApexTest\Debug\ApexTest.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"Z:\Documents\ApexTest\ApexTest\Debug\ApexTest.exe;#1" /manifest Debug\ApexTest.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\ApexTest.unsuccessfulbuild".
+         Touching "Debug\ApexTest.lastbuildstate".
+     1>Done Building Project "Z:\Documents\ApexTest\ApexTest\ApexTest\ApexTest.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:07.91

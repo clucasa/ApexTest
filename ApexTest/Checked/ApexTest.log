@@ -1,0 +1,47 @@
+﻿Build started 3/13/2013 10:45:08 PM.
+     1>Project "E:\Zander\Dropbox\School\Senior Design\ApexTest\ApexTest\ApexTest.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         e:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _ITERATOR_DEBUG_LEVEL=0 /D _MBCS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Checked\\" /Fd"Checked\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt apex.cpp
+         apex.cpp
+     1>e:\zander\dropbox\school\senior design\apextest\apextest\apex.cpp(164): warning C4305: 'argument' : truncation from 'double' to 'physx::PxReal'
+       Link:
+         e:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\ApexTest.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:libcmt.lib /MANIFEST /ManifestFile:"Checked\ApexTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\ApexTest.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\ApexTest.lib" /MACHINE:X86 Checked\apex.obj
+         Checked\ApexParticles.obj
+         Checked\Main.obj
+         Checked\PhysXHeightField.obj
+         Checked\ZeusRenderResources.obj
+         Checked\ZeusRenderResourceManager.obj
+         LINK : E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\ApexTest.exe not found or not built by the last incremental link; performing full link
+     1>PhysX3ExtensionsCHECKED.lib(ExtCpuWorkerThread.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtCpuWorkerThread.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtD6Joint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtD6Joint.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtD6JointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtD6JointSolverPrep.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDefaultCpuDispatcher.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDefaultCpuDispatcher.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDefaultErrorCallback.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDefaultErrorCallback.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDefaultSimulationFilterShader.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDefaultSimulationFilterShader.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDistanceJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDistanceJoint.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtDistanceJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtDistanceJointSolverPrep.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtExtensions.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtExtensions.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtFixedJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtFixedJoint.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtFixedJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtFixedJointSolverPrep.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtJoint.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtMetaData.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtMetaData.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtPrismaticJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtPrismaticJoint.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtPrismaticJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtPrismaticJointSolverPrep.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtPvdClientImpl.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtPvdClientImpl.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtRevoluteJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtRevoluteJoint.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtRevoluteJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtRevoluteJointSolverPrep.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtRigidBodyExt.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtRigidBodyExt.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtSimpleFactory.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtSimpleFactory.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtSphericalJoint.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtSphericalJoint.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtSphericalJointSolverPrep.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtSphericalJointSolverPrep.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(ExtVisualDebugger.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(ExtVisualDebugger.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysX3ExtensionsCHECKED.lib(PxExtensionAutoGeneratedMetaDataObjects.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysX3ExtensionsCHECKED.lib(PxExtensionAutoGeneratedMetaDataObjects.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+     1>PhysXVisualDebuggerSDKCHECKED.lib(PvdNetworkStreams.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'PhysXVisualDebuggerSDKCHECKED.lib(PvdNetworkStreams.obj)' or at 'E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\vc100.pdb'; linking object as if no debug info
+         ApexTest.vcxproj -> E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\ApexTest.exe
+       Manifest:
+         c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\Zander\Dropbox\School\Senior Design\ApexTest\Checked\ApexTest.exe;#1" /manifest Checked\ApexTest.exe.intermediate.manifest
+     1>Done Building Project "E:\Zander\Dropbox\School\Senior Design\ApexTest\ApexTest\ApexTest.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.44

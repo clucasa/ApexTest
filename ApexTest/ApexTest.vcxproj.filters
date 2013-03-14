@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Apex">
+      <UniqueIdentifier>{a1a775ca-a0be-4e22-9ff9-ca8e093517e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Apex\ApexParticles">
+      <UniqueIdentifier>{ea8de009-e5b4-4078-8019-338d0a7a0837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Apex\RenderResourceManager">
+      <UniqueIdentifier>{0bfd4751-4717-4349-a8c0-d0aa0b18772a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Apex\RenderResourceManager\ZeusRenderResource">
+      <UniqueIdentifier>{53c9827c-bcc5-4ef2-b94f-c8c3e307f3a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Apex\PhysXHeightField">
+      <UniqueIdentifier>{242a9e9e-07cb-41f7-b5c1-012165e44d7a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="apex.cpp">
+      <Filter>Source Files\Apex</Filter>
+    </ClCompile>
+    <ClCompile Include="ApexParticles.cpp">
+      <Filter>Source Files\Apex\ApexParticles</Filter>
+    </ClCompile>
+    <ClCompile Include="ZeusRenderResourceManager.cpp">
+      <Filter>Source Files\Apex\RenderResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ZeusRenderResources.cpp">
+      <Filter>Source Files\Apex\RenderResourceManager\ZeusRenderResource</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXHeightField.cpp">
+      <Filter>Source Files\Apex\PhysXHeightField</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders.hlsl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="apex.h">
+      <Filter>Source Files\Apex</Filter>
+    </ClInclude>
+    <ClInclude Include="ApexParticles.h">
+      <Filter>Source Files\Apex\ApexParticles</Filter>
+    </ClInclude>
+    <ClInclude Include="ZeusRenderResourceManager.h">
+      <Filter>Source Files\Apex\RenderResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ZeusRenderResources.h">
+      <Filter>Source Files\Apex\RenderResourceManager\ZeusRenderResource</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysXHeightField.h">
+      <Filter>Source Files\Apex\PhysXHeightField</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
