@@ -16,6 +16,10 @@
 #include "NxModuleParticleIos.h"
 #include "NxParamUtils.h"
 
+#include "NxApexEmitterAsset.h"
+#include "NxApexEmitterActor.h"
+
+
 #include <vector>
 
 using namespace std;
@@ -28,6 +32,7 @@ public:
     ~ApexParticles();
 
     void Init(NxApexSDK* gApexSDK);
+    void CreateEmitter(NxApexSDK* gApexSDK, NxApexScene* gApexScene);
 
 private:
     NxModuleParticleIos*        mParticleIosModule;

@@ -232,7 +232,7 @@ Apex* apexThisOne;
 // this is the function used to render a single frame
 void RenderFrame(void)
 {
-    bool fetch = apexThisOne->advance(0.0003);
+    bool fetch = apexThisOne->advance(0.0003f);
     CBUFFER cBuffer;
 
     cBuffer.LightVector = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 0.0f);
@@ -454,7 +454,7 @@ void InitPipeline()
 bool InitApex(ID3D11DeviceContext* devcon, ID3D11Device* dev)
 {
 	apexThisOne = new Apex();
-    apexThisOne->Init();
+    apexThisOne->Init(dev, devcon);
     apexThisOne->InitParticles();
     return true;
 }

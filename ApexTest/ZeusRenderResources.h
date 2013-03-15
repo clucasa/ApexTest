@@ -15,10 +15,14 @@
 #include <NxUserRenderSurfaceBuffer.h>
 #include <NxUserRenderVertexBuffer.h>
 
+#include <d3d11.h>
+#include <d3dx11.h>
+#include <d3dx10.h>
+
 #include <vector>
 using namespace std;
 
-//namespace ZuesRenderer
+//namespace ZeusRenderer
 //{
 //
 //}
@@ -31,13 +35,17 @@ class ZeusVertexBuffer : public physx::apex::NxUserRenderVertexBuffer
 {
 public:
     
-    ZeusVertexBuffer(const physx::apex::NxUserRenderVertexBufferDesc& desc);
+    ZeusVertexBuffer(const physx::apex::NxUserRenderVertexBufferDesc& desc, ID3D11Device* dev, ID3D11DeviceContext* devcon);
     virtual ~ZeusVertexBuffer(void);
 
     virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
 
 private:
     virtual void writeBuffer(const physx::NxApexRenderVertexBufferData& data, physx::PxU32 firstVertex, physx::PxU32 numVertices);
+    ID3D11Buffer*           mVertexBuffer;
+    ID3D11Device*           mDevice;
+    ID3D11DeviceContext*    mDevcon;
+    int                     mStride;
 };
 
 
@@ -49,13 +57,18 @@ class ZeusIndexBuffer : public physx::apex::NxUserRenderIndexBuffer
 {
 public:
 	
-	ZeusIndexBuffer(const physx::apex::NxUserRenderIndexBufferDesc& desc);
+	ZeusIndexBuffer(const physx::apex::NxUserRenderIndexBufferDesc& desc, ID3D11Device* dev, ID3D11DeviceContext* devcon);
 	virtual ~ZeusIndexBuffer(void);
 
     virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
 
 private:
 	virtual void writeBuffer(const void* srcData, physx::PxU32 srcStride, physx::PxU32 firstDestElement, physx::PxU32 numElements);
+    ID3D11Buffer*           mIndexBuffer;
+    ID3D11Device*           mDevice;
+    ID3D11DeviceContext*    mDevcon;
+    physx::apex::NxRenderPrimitiveType::Enum  mPrimitiveType;
+    int                     mStride;
 };
 
 

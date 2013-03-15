@@ -37,16 +37,16 @@ bool Apex::advance(float dt)
 	if(mCooldown > 0.0f)
 		mCooldown -= mStepSize;
 
-    mScene->simulate(mStepSize);
+    gApexScene->simulate(mStepSize);
     return true;
 }
 
 void Apex::fetch()
 {
-    mScene->fetchResults(true);
+    gApexScene->fetchResults(true, NULL);
 }
 
-bool Apex::Init()
+bool Apex::Init(ID3D11Device* dev, ID3D11DeviceContext* devcon)
 {
     if(!InitPhysX())
         return false;
@@ -58,7 +58,7 @@ bool Apex::Init()
     apexDesc.physXSDK = mPhysics;
     apexDesc.cooking = mCooking;
 	
-	m_renderResourceManager = new ZeusRenderResourceManager();
+	m_renderResourceManager = new ZeusRenderResourceManager(dev,devcon);
 	apexDesc.renderResourceManager = m_renderResourceManager;
 
     if(apexDesc.isValid())
@@ -161,7 +161,7 @@ bool Apex::InitPhysX()
 		return false;
 	
 	boxActor->setLinearVelocity(PxVec3(0.0,0.0,0.0));
-	boxActor->setAngularDamping(0.95);
+	boxActor->setAngularDamping((PxReal)0.95);
 	//PxRigidBodyExt::updateMassAndInertia(*boxActor, density);
 
 	mScene->addActor(*boxActor);
@@ -191,8 +191,8 @@ bool Apex::InitPhysX()
 bool Apex::InitParticles()
 {
 	gApexParticles = new ApexParticles();
-	//gApexParticles->Init(gApexSDK);
-
+	gApexParticles->Init(gApexSDK);
+    gApexParticles->CreateEmitter(gApexSDK, gApexScene);
     
 	return true;
 }

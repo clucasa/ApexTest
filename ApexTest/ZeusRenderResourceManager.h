@@ -1,12 +1,15 @@
 #ifndef RENDER_RESOURCE_MANAGER
 #define RENDER_RESOURCE_MANAGER
 #include "apex.h"
-//#include "ZeusRenderResources.h"
+#include "ZeusRenderResources.h"
+#include <d3d11.h>
+#include <d3dx11.h>
+#include <d3dx10.h>
 
 class ZeusRenderResourceManager : public physx::apex::NxUserRenderResourceManager
 {
 public:
-	ZeusRenderResourceManager();
+    ZeusRenderResourceManager(ID3D11Device* dev, ID3D11DeviceContext* devcon);
 	virtual								~ZeusRenderResourceManager(void);
 
 public:
@@ -43,6 +46,8 @@ protected:
 	physx::PxU32				m_numInstanceBuffers;
 	physx::PxU32				m_numSpriteBuffers;
 	physx::PxU32				m_numResources;
+    ID3D11Device*               mDevice;
+    ID3D11DeviceContext*        mDevcon;
 };
 
 #endif

@@ -61,6 +61,32 @@ void ApexParticles::Init(NxApexSDK* gApexSDK)
 
 }
 
+void ApexParticles::CreateEmitter(NxApexSDK* gApexSDK, NxApexScene* gApexScene)
+{
+    NxEmitterSphereGeom* sphereEmitter;
+    sphereEmitter->setRadius((PxF32)2.0);
+    sphereEmitter->setEmitterType(physx::apex::NxApexEmitterType::NX_ET_RATE);
+    
+    NxApexEmitterAsset* emitterAsset = sphereEmitter;
+    emitterAsset->createApexActor(emitterAsset->getDefaultActorDesc(),*gApexScene);
+
+    NxApexEmitterActor* emitterActor;
+    emitterActor->getEmitterAsset()->createApexActor(emitterActor->getEmitterAsset()->getDefaultActorDesc(),
+    PxMat44 position;
+    position.setPosition(PxVec3(0, 5, 0));
+    emitterActor->setCurrentPose(position);
+    emitterActor->emitAssetParticles(true);
+    emitterActor->
+    //NxParameterized
+    
+    //ApexEmitterAcotr
+    //emitterActor->
+
+
+    //emitterActor->startEmit( true );
+    
+}
+
 bool ApexParticles::checkErrorCode(NxApexCreateError* err)
 {
     bool retval = false;

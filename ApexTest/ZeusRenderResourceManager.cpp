@@ -1,8 +1,9 @@
 #include "ZeusRenderResourceManager.h"
 
-ZeusRenderResourceManager::ZeusRenderResourceManager()
+ZeusRenderResourceManager::ZeusRenderResourceManager(ID3D11Device* dev, ID3D11DeviceContext* devcon) :
+    mDevice(dev), mDevcon(devcon)
 {
-
+    
 }
 
 ZeusRenderResourceManager::~ZeusRenderResourceManager()
@@ -12,48 +13,29 @@ ZeusRenderResourceManager::~ZeusRenderResourceManager()
 
 physx::apex::NxUserRenderVertexBuffer* ZeusRenderResourceManager::createVertexBuffer(const physx::apex::NxUserRenderVertexBufferDesc& desc)
 {
-    NxUserRenderVertexBuffer* buffer = 0;
-
-	/*unsigned int numSemantics = 0;
-	for (unsigned int i = 0; i < physx::apex::NxRenderVertexSemantic::NUM_SEMANTICS; i++)
-	{
-		numSemantics += desc.buffersRequest[i] != physx::apex::NxRenderDataFormat::UNSPECIFIED ? 1 : 0;
-	}
-	PX_ASSERT(desc.isValid());
-	if (desc.isValid() && numSemantics > 0)
-	{
-		buffer = new ZeusVertexBuffer(desc);
-		m_numVertexBuffers++;
-	}*/
-
-	return buffer;
+    ZeusVertexBuffer* vbuff = new ZeusVertexBuffer(desc, mDevice, mDevcon);
+	return (NxUserRenderVertexBuffer*)vbuff;
 }
 
 void ZeusRenderResourceManager::releaseVertexBuffer(physx::apex::NxUserRenderVertexBuffer& buffer)
 {
-	/*PX_ASSERT(m_numVertexBuffers > 0);
+	PX_ASSERT(m_numVertexBuffers > 0);
 	m_numVertexBuffers--;
-	delete &buffer;*/
+	delete &buffer;
 }
 
 
 physx::apex::NxUserRenderIndexBuffer* ZeusRenderResourceManager::createIndexBuffer(const physx::apex::NxUserRenderIndexBufferDesc& desc)
 {
-    NxUserRenderIndexBuffer* buffer = 0;
-	/*PX_ASSERT(desc.isValid());
-	if (desc.isValid())
-	{
-		buffer = new ZeusIndexBuffer(desc);
-		m_numIndexBuffers++;
-	}*/
-	return buffer;
+    ZeusIndexBuffer* indbuff = new ZeusIndexBuffer(desc, mDevice, mDevcon);
+    return indbuff;
 }
 
 void ZeusRenderResourceManager::releaseIndexBuffer(physx::apex::NxUserRenderIndexBuffer& buffer)
 {
-	/*PX_ASSERT(m_numIndexBuffers > 0);
+	PX_ASSERT(m_numIndexBuffers > 0);
 	m_numIndexBuffers--;
-	delete &buffer;*/
+	delete &buffer;
 }
 
 
