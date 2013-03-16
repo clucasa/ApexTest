@@ -63,7 +63,7 @@ void ZeusVertexBuffer::writeBuffer(const physx::NxApexRenderVertexBufferData& da
     D3D11_MAPPED_SUBRESOURCE mappedResource;
     HRESULT result;
     physx::apex::NxApexRenderSemanticData* verticesPtr;
-    physx::apex::NxApexRenderSemanticData* srcData;
+    physx::apex::NxApexRenderSemanticData* srcData = (physx::apex::NxApexRenderSemanticData*) malloc(mStride*numVertices);
     // Lock the vertex buffer so it can be written to.
 	result = mDevcon->Map(mVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if(FAILED(result))
@@ -102,6 +102,7 @@ void ZeusVertexBuffer::writeBuffer(const physx::NxApexRenderVertexBufferData& da
 /*******************************
 * ZeusIndexBuffer
 *********************************/
+
 ZeusIndexBuffer::ZeusIndexBuffer(const physx::apex::NxUserRenderIndexBufferDesc& desc, ID3D11Device* dev, ID3D11DeviceContext* devcon) :
     mDevice(dev), mDevcon(devcon), mPrimitiveType(desc.primitives), mStride(0)
 {
@@ -182,3 +183,194 @@ void ZeusIndexBuffer::writeBuffer(const void* srcData, physx::PxU32 srcStride, p
 	// Unlock the vertex buffer.
 	mDevcon->Unmap(mIndexBuffer, 0);
 }
+
+/*******************************
+* ZeusSurfaceBuffer
+*********************************/
+
+ZeusSurfaceBuffer::ZeusSurfaceBuffer(const physx::apex::NxUserRenderSurfaceBufferDesc& desc)
+{
+
+}
+
+ZeusSurfaceBuffer::~ZeusSurfaceBuffer(void)
+{
+
+}
+
+void ZeusSurfaceBuffer::writeBuffer(const void* srcData, physx::PxU32 srcStride, physx::PxU32 firstDestElement, physx::PxU32 width, physx::PxU32 height, physx::PxU32 depth)
+{
+
+}
+
+
+/*******************************
+* ZeusBoneBuffer
+*********************************/
+
+ZeusBoneBuffer::ZeusBoneBuffer(const physx::apex::NxUserRenderBoneBufferDesc& desc)
+{
+
+}
+
+ZeusBoneBuffer::~ZeusBoneBuffer(void)
+{
+
+}
+
+void ZeusBoneBuffer::writeBuffer(const physx::apex::NxApexRenderBoneBufferData& data, physx::PxU32 firstBone, physx::PxU32 numBones)
+{
+
+}
+
+
+/*******************************
+* ZeusInstanceBuffer
+*********************************/
+
+ZeusInstanceBuffer::ZeusInstanceBuffer(const physx::apex::NxUserRenderInstanceBufferDesc& desc)
+{
+	mMaxInstances = desc.maxInstances;
+	mInstanceBuffer = new struct InstanceBuffer[mMaxInstances];
+}
+
+ZeusInstanceBuffer::~ZeusInstanceBuffer(void)
+{
+	if (mInstanceBuffer)
+	{
+		delete [] mInstanceBuffer;
+	}
+}
+
+void ZeusInstanceBuffer::writeBuffer(const physx::apex::NxApexRenderInstanceBufferData& data, physx::PxU32 firstInstance, physx::PxU32 numInstances)
+{
+	for(physx::PxU32 j = 0; j < numInstances; j++)
+	{
+		for (physx::PxU32 i = 0; i < physx::apex::NxRenderInstanceSemantic::NUM_SEMANTICS; i++)
+		{
+			physx::apex::NxRenderInstanceSemantic::Enum semantic = (physx::apex::NxRenderInstanceSemantic::Enum)i;
+			const physx::apex::NxApexRenderSemanticData& semanticData = data.getSemanticData(semantic);
+			if (semanticData.data)
+			{
+				
+				switch (i)
+				{
+				case physx::apex::NxRenderInstanceSemantic::POSITION:
+					//mInstanceBuffer[j + firstInstance].Position = semanticData.data;
+					break;
+				case physx::apex::NxRenderInstanceSemantic::ROTATION_SCALE:
+					
+					break;
+				case physx::apex::NxRenderInstanceSemantic::VELOCITY_LIFE:
+					
+					break;
+				case physx::apex::NxRenderInstanceSemantic::DENSITY:
+
+					break;
+				case physx::apex::NxRenderInstanceSemantic::UV_OFFSET:
+
+					break;
+				case physx::apex::NxRenderInstanceSemantic::LOCAL_OFFSET:
+
+					break;
+				}
+			}
+		}
+	}
+}
+
+bool ZeusInstanceBuffer::getInteropResourceHandle(CUgraphicsResource& handle)
+{
+	return false;
+}
+
+
+/*******************************
+* ZeusSpriteBuffer
+*********************************/
+
+ZeusSpriteBuffer::ZeusSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDesc& desc)
+{
+
+}
+
+ZeusSpriteBuffer::~ZeusSpriteBuffer(void)
+{
+
+}
+
+bool ZeusSpriteBuffer::getInteropResourceHandle(CUgraphicsResource& handle)
+{
+	return false;
+}
+
+void ZeusSpriteBuffer::writeBuffer(const physx::apex::NxApexRenderSpriteBufferData& data, physx::PxU32 firstSprite, physx::PxU32 numSprites)
+{
+
+}
+
+
+/*******************************
+* ZeusRenderResource
+*********************************/
+
+ZeusRenderResource::ZeusRenderResource(const physx::apex::NxUserRenderResourceDesc& desc)
+{
+	mBoneBuffer = static_cast<ZeusBoneBuffer*>(desc.boneBuffer);
+	mIndexBuffer = static_cast<ZeusIndexBuffer*>(desc.indexBuffer);
+	mInstanceBuffer = static_cast<ZeusInstanceBuffer*>(desc.instanceBuffer);
+	mSpriteBuffer = static_cast<ZeusSpriteBuffer*>(desc.spriteBuffer);
+
+	mNumVertexBuffers = desc.numVertexBuffers;
+	for(PxU32 i = 0; i < mNumVertexBuffers; i++)
+	{
+		mVertexBuffers[i] = static_cast<ZeusVertexBuffer*>(desc.vertexBuffers[i]);
+	}
+
+	setVertexBufferRange(desc.firstVertex, desc.numVerts);
+	setIndexBufferRange(desc.firstIndex, desc.numIndices);
+	setBoneBufferRange(desc.firstBone, desc.numBones);
+	setInstanceBufferRange(desc.firstInstance, desc.numInstances);
+	setSpriteBufferRange(desc.firstSprite, desc.numSprites);
+	setMaterial(desc.material);
+}
+
+ZeusRenderResource::~ZeusRenderResource()
+{
+	if (mVertexBuffers)
+	{
+		delete [] mVertexBuffers;
+	}
+}
+
+void ZeusRenderResource::setVertexBufferRange(physx::PxU32 firstVertex, physx::PxU32 numVerts)
+{
+
+}
+
+void ZeusRenderResource::setIndexBufferRange(physx::PxU32 firstIndex, physx::PxU32 numIndices)
+{
+
+}
+
+void ZeusRenderResource::setBoneBufferRange(physx::PxU32 firstBone, physx::PxU32 numBones)
+{
+
+}
+
+void ZeusRenderResource::setInstanceBufferRange(physx::PxU32 firstInstance, physx::PxU32 numInstances)
+{
+
+}
+
+void ZeusRenderResource::setSpriteBufferRange(physx::PxU32 firstSprite, physx::PxU32 numSprites)
+{
+
+}
+
+void ZeusRenderResource::setMaterial(void* material)
+{
+
+}
+
+

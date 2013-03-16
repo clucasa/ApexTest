@@ -14,6 +14,7 @@ ZeusRenderResourceManager::~ZeusRenderResourceManager()
 physx::apex::NxUserRenderVertexBuffer* ZeusRenderResourceManager::createVertexBuffer(const physx::apex::NxUserRenderVertexBufferDesc& desc)
 {
     ZeusVertexBuffer* vbuff = new ZeusVertexBuffer(desc, mDevice, mDevcon);
+	m_numVertexBuffers++;
 	return (NxUserRenderVertexBuffer*)vbuff;
 }
 
@@ -28,6 +29,7 @@ void ZeusRenderResourceManager::releaseVertexBuffer(physx::apex::NxUserRenderVer
 physx::apex::NxUserRenderIndexBuffer* ZeusRenderResourceManager::createIndexBuffer(const physx::apex::NxUserRenderIndexBufferDesc& desc)
 {
     ZeusIndexBuffer* indbuff = new ZeusIndexBuffer(desc, mDevice, mDevcon);
+	m_numIndexBuffers++;
     return indbuff;
 }
 
@@ -41,102 +43,77 @@ void ZeusRenderResourceManager::releaseIndexBuffer(physx::apex::NxUserRenderInde
 
 physx::apex::NxUserRenderSurfaceBuffer* ZeusRenderResourceManager::createSurfaceBuffer(const physx::apex::NxUserRenderSurfaceBufferDesc& desc)
 {
-    NxUserRenderSurfaceBuffer* buffer = 0;
-	/*PX_ASSERT(desc.isValid());
-	if (desc.isValid())
-	{
-		buffer = new ZeusSurfaceBuffer(desc);
-		m_numSurfaceBuffers++;
-	}*/
-	return buffer;
+    ZeusSurfaceBuffer* buffer = 0;
+	m_numSurfaceBuffers++;
+	return (NxUserRenderSurfaceBuffer*)buffer;
 }
 
 void ZeusRenderResourceManager::releaseSurfaceBuffer(physx::apex::NxUserRenderSurfaceBuffer& buffer)
 {
-	/*PX_ASSERT(m_numSurfaceBuffers > 0);
+	PX_ASSERT(m_numSurfaceBuffers > 0);
 	m_numSurfaceBuffers--;
-	delete &buffer;*/
+	delete &buffer;
 }
 
 
 physx::apex::NxUserRenderBoneBuffer* ZeusRenderResourceManager::createBoneBuffer(const physx::apex::NxUserRenderBoneBufferDesc& desc)
 {
-    NxUserRenderBoneBuffer* buffer = 0;
-	/*PX_ASSERT(desc.isValid());
-	if (desc.isValid())
-	{
-		buffer = new ZeusBoneBuffer(desc);
-		m_numBoneBuffers++;
-	}*/
-	return buffer;
+    ZeusBoneBuffer* buffer = 0;
+	m_numBoneBuffers++;
+	return (NxUserRenderBoneBuffer*)buffer;
 }
 
 void ZeusRenderResourceManager::releaseBoneBuffer(physx::apex::NxUserRenderBoneBuffer& buffer)
 {
-	/*PX_ASSERT(m_numBoneBuffers > 0);
+	PX_ASSERT(m_numBoneBuffers > 0);
 	m_numBoneBuffers--;
-	delete &buffer;*/
+	delete &buffer;
 }
 
 
 physx::apex::NxUserRenderInstanceBuffer* ZeusRenderResourceManager::createInstanceBuffer(const physx::apex::NxUserRenderInstanceBufferDesc& desc)
 {
-    NxUserRenderInstanceBuffer* buffer = 0;
-	/*PX_ASSERT(desc.isValid());
-	if (desc.isValid())
-	{
-		buffer = new ZeusInstanceBuffer(desc);
-		m_numBoneBuffers++;
-	}*/
-	return buffer;
+    ZeusInstanceBuffer* buffer = 0;
+	m_numBoneBuffers++;
+	return (NxUserRenderInstanceBuffer*)buffer;
 }
 
 void ZeusRenderResourceManager::releaseInstanceBuffer(physx::apex::NxUserRenderInstanceBuffer& buffer)
 {
-	/*PX_ASSERT(m_numInstanceBuffers > 0);
+	PX_ASSERT(m_numInstanceBuffers > 0);
 	m_numInstanceBuffers--;
-	delete &buffer;*/
+	delete &buffer;
 }
 
 
 physx::apex::NxUserRenderSpriteBuffer* ZeusRenderResourceManager::createSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDesc& desc)
 {
-    NxUserRenderSpriteBuffer* buffer = 0;
-	//PX_ASSERT(desc.isValid());
-	//if (desc.isValid())
-	//{
-	//	// convert SB to VB
-	//	buffer = new ZeusSpriteBuffer(desc);
-	//	m_numSpriteBuffers++;
-	//}
-	return buffer;
+    ZeusSpriteBuffer* buffer = 0;
+	m_numSpriteBuffers++;
+	return (NxUserRenderSpriteBuffer*)buffer;
 }
 
 void ZeusRenderResourceManager::releaseSpriteBuffer(physx::apex::NxUserRenderSpriteBuffer& buffer)
 {
-	/*PX_ASSERT(m_numVertexBuffers > 0);
+	PX_ASSERT(m_numVertexBuffers > 0);
 	m_numSpriteBuffers--;
-	delete &buffer;*/
+	delete &buffer;
 }
 
 
 physx::apex::NxUserRenderResource* ZeusRenderResourceManager::createResource(const physx::apex::NxUserRenderResourceDesc& desc)
 {
-   	NxUserRenderResource* resource = 0;
-	/*PX_ASSERT(desc.isValid());
-	if (desc.isValid())
-	{
-		resource = new ZeusRenderResource(desc);
-		m_numResources++;
-	}*/
-	return resource;
+   	ZeusRenderResource* resource =  new ZeusRenderResource(desc);
+	m_numResources++;
+	
+	return (NxUserRenderResource*)resource;
 }
 
 void ZeusRenderResourceManager::releaseResource(physx::apex::NxUserRenderResource& resource)
 {
-	/*PX_ASSERT(m_numResources > 0);
+	PX_ASSERT(m_numResources > 0);
 	m_numResources--;
-	delete &resource;*/
+	delete &resource;
 }
 
 

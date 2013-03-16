@@ -21,9 +21,9 @@ struct Heightfield mHeightfield;
 
 void PhysXHeightfield::InitHeightfield(PxPhysics* physics, PxScene* scene, const char* filename)
 {
-	float xScale = 0.0125;
-	float yScale = 0.001;
-	float zScale = 0.00001;
+	float xScale = 0.0125f;
+	float yScale = 0.001f;
+	float zScale = 0.00001f;
 
 	
 	// NOTE: Assuming that heightfield texture has B8G8R8A8 format.
@@ -76,7 +76,7 @@ bool PhysXHeightfield::LoadHeightfield(const char* filename)
 {
 	mHeightfield.height = 2049;
 	mHeightfield.width = 2049;
-    float yScale = 0.001;
+    float yScale = 0.001f;
 	// A height for each vertex
 	std::vector<unsigned char> in( mHeightfield.width * mHeightfield.height );
 
