@@ -13,6 +13,14 @@ Apex::Apex() :
 
 Apex::~Apex()
 {
+	gApexScene->setPhysXScene(0);
+
+	// Now, it's safe to release the NxScene...
+	gApexScene->fetchResults(true, NULL);                 // ensure scene is not busy
+	gApexScene->release();
+	mCpuDispatcher->release();
+
+
 	// remember to release the connection by manual in the end
     if (pvdConnection)
             pvdConnection->release();

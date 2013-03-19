@@ -63,28 +63,38 @@ void ApexParticles::Init(NxApexSDK* gApexSDK)
 
 void ApexParticles::CreateEmitter(NxApexSDK* gApexSDK, NxApexScene* gApexScene)
 {
-    NxEmitterSphereGeom* sphereEmitter;
-    sphereEmitter->setRadius((PxF32)2.0);
-    sphereEmitter->setEmitterType(physx::apex::NxApexEmitterType::NX_ET_RATE);
-    
-    NxApexEmitterAsset* emitterAsset = sphereEmitter;
-    emitterAsset->createApexActor(emitterAsset->getDefaultActorDesc(),*gApexScene);
+	NxApexAssetAuthoring* assetauthoring = gApexSDK->createAssetAuthoring(NX_APEX_EMITTER_AUTHORING_TYPE_NAME);
+    //NxEmitterGeom sphereEmitter;
+    //sphereEmitter->setRadius((PxF32)2.0);
+    //sphereEmitter->setEmitterType(physx::apex::NxApexEmitterType::NX_ET_RATE);
+    //
+	NxParameterized::Interface* asParams = assetauthoring->releaseAndReturnNxParameterizedInterface();
+	
+	// Set the asset's type
+	//NxParameterized::setParamEnum( *asParams, "geometryType", physx::apex::NxEmitterSphereGeom::getEmitterType() );
 
-    NxApexEmitterActor* emitterActor;
-    emitterActor->getEmitterAsset()->createApexActor(emitterActor->getEmitterAsset()->getDefaultActorDesc(),
-    PxMat44 position;
-    position.setPosition(PxVec3(0, 5, 0));
-    emitterActor->setCurrentPose(position);
-    emitterActor->emitAssetParticles(true);
-    emitterActor->
-    //NxParameterized
-    
-    //ApexEmitterAcotr
-    //emitterActor->
-
-
-    //emitterActor->startEmit( true );
-    
+	NxApexEmitterAsset* emitterAsset = static_cast<NxApexEmitterAsset*> (gApexSDK->createAsset(asParams, "sphere_emitter"));
+	
+	NxParameterized::Interface* descParams = emitterAsset->getDefaultActorDesc();
+	
+	PX_ASSERT(descParams);
+	if (!descParams)
+	{
+		return;
+	}
+	// Set Actor pose
+	//NxParameterized::setParamMat44( *descParams, "initialPose", pose );
+	NxApexEmitterActor* emitterActor;
+	if(descParams->areParamsOK())
+	{
+		emitterActor = static_cast<NxApexEmitterActor*>(emitterAsset->createApexActor(*descParams,*gApexScene));
+		if(emitterActor)
+		{
+			emitterActor->setCurrentPosition(PxVec3(0.0f, 5.0f, 0.0f));
+			emitterActor->emitAssetParticles(true);
+			emitterActor->startEmit( true );
+		}
+	}
 }
 
 bool ApexParticles::checkErrorCode(NxApexCreateError* err)

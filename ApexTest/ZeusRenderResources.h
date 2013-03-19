@@ -119,7 +119,16 @@ public:
 
 	virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
 private:
-
+	// not sure if I should make a d3d11 buffer for this or not...
+	struct InstanceBuffer{
+		physx::PxVec3			Position;
+		physx::PxVec3			Rotate;
+		physx::PxVec3			Scale;
+		physx::PxVec4			VelocityLife;
+		physx::PxU32			Density;
+	};
+	physx::PxU32						mMaxInstances;
+	struct InstanceBuffer*				mInstanceBuffer;
 };
 
 /*******************************
@@ -163,14 +172,14 @@ public:
 
 	physx::PxU32 getNbVertexBuffers() const
 	{
-		return mVertexBuffers.size();
+		return mNumVertexBuffers;
 	}
 
 	physx::apex::NxUserRenderVertexBuffer* getVertexBuffer(physx::PxU32 index) const
 	{
 		physx::apex::NxUserRenderVertexBuffer* buffer = 0;
-		PX_ASSERT(index < mVertexBuffers.size());
-		if (index < mVertexBuffers.size())
+		PX_ASSERT(index < mNumVertexBuffers);
+		if (index < mNumVertexBuffers)
 		{
 			buffer = mVertexBuffers[index];
 		}
@@ -198,7 +207,8 @@ public:
 	}
 
 private:
-	vector<ZeusVertexBuffer*>	mVertexBuffers;
+	ZeusVertexBuffer**			mVertexBuffers;
+	physx::PxU32				mNumVertexBuffers;
 	
 	ZeusIndexBuffer*			mIndexBuffer;
 
