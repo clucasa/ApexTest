@@ -18,7 +18,8 @@
 
 #include "NxApexEmitterAsset.h"
 #include "NxApexEmitterActor.h"
-
+#include "NxParticleIosAsset.h"
+#include "NxIofxAsset.h"
 
 #include <vector>
 

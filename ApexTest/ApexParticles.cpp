@@ -31,6 +31,19 @@ void ApexParticles::Init(NxApexSDK* gApexSDK)
 	    mParticleIosModule->init(*params);
     }
 
+    
+    mIofxModule = static_cast<NxModuleIofx*>(gApexSDK->createModule("IOFX", &errorCode));
+    checkErrorCode(&errorCode);
+	PX_ASSERT(mIofxModule);
+	if (mIofxModule)
+	{
+		NxParameterized::Interface* params = mIofxModule->getDefaultModuleDesc();
+		mIofxModule->init(*params);
+
+		//m_apexIofxModule->disableCudaInterop();
+		//m_apexIofxModule->disableCudaModifiers();
+	}
+
     mEmitterModule = static_cast<NxModuleEmitter*> ( gApexSDK->createModule("Emitter", &errorCode));
     checkErrorCode(&errorCode);
     PX_ASSERT(mEmitterModule);
@@ -47,34 +60,36 @@ void ApexParticles::Init(NxApexSDK* gApexSDK)
 	    }
     }
 
-    mIofxModule = static_cast<NxModuleIofx*>(gApexSDK->createModule("IOFX", &errorCode));
-    checkErrorCode(&errorCode);
-	PX_ASSERT(mIofxModule);
-	if (mIofxModule)
-	{
-		NxParameterized::Interface* params = mIofxModule->getDefaultModuleDesc();
-		mIofxModule->init(*params);
-
-		//m_apexIofxModule->disableCudaInterop();
-		//m_apexIofxModule->disableCudaModifiers();
-	}
-
 }
 
 void ApexParticles::CreateEmitter(NxApexSDK* gApexSDK, NxApexScene* gApexScene)
 {
-	NxApexAssetAuthoring* assetauthoring = gApexSDK->createAssetAuthoring(NX_APEX_EMITTER_AUTHORING_TYPE_NAME);
-    //NxEmitterGeom sphereEmitter;
-    //sphereEmitter->setRadius((PxF32)2.0);
-    //sphereEmitter->setEmitterType(physx::apex::NxApexEmitterType::NX_ET_RATE);
-    //
-	NxParameterized::Interface* asParams = assetauthoring->releaseAndReturnNxParameterizedInterface();
-	
-	// Set the asset's type
-	//NxParameterized::setParamEnum( *asParams, "geometryType", physx::apex::NxEmitterSphereGeom::getEmitterType() );
+    NxParticleIosAssetAuthoring* particleAuthoring = static_cast<NxParticleIosAssetAuthoring*> (gApexSDK->createAssetAuthoring(NX_PARTICLE_IOS_AUTHORING_TYPE_NAME));
+    NxIofxAssetAuthoring* iofxAuthoring = static_cast<NxIofxAssetAuthoring*> (gApexSDK->createAssetAuthoring(NX_IOFX_AUTHORING_TYPE_NAME));
+    
+    NxParameterized::Interface* iosParams = particleAuthoring->releaseAndReturnNxParameterizedInterface();
+    NxParameterized::Interface* iofxParams = iofxAuthoring->releaseAndReturnNxParameterizedInterface();
 
-	NxApexEmitterAsset* emitterAsset = static_cast<NxApexEmitterAsset*> (gApexSDK->createAsset(asParams, "sphere_emitter"));
+    NxParticleIosAsset* iosAsset = static_cast<NxParticleIosAsset*> (gApexSDK->createAsset(iosParams, "zeus_ios"));
+    NxIofxAsset* iofxAsset = static_cast<NxIofxAsset*> (gApexSDK->createAsset(iofxParams, "zeus_iofx"));
+    
+    NxParameterized::Interface* iosAssetNamedRef = 0;
+    iosAssetNamedRef->initDefaults();
+    iosAssetNamedRef->setName(iosAsset->getAssetNxParameterized()->name());
+    NxParameterized::Interface* iofxAssetNamedRef = 0;
+    iofxAssetNamedRef->initDefaults();
+    iofxAssetNamedRef->setName(iofxAsset->getAssetNxParameterized()->name());
+
+
+    NxApexAssetAuthoring* assetauthoring = gApexSDK->createAssetAuthoring(NX_APEX_EMITTER_AUTHORING_TYPE_NAME);
+    NxParameterized::Interface* asParams = assetauthoring->releaseAndReturnNxParameterizedInterface();
+  
+	// Set the asset's type
+    NxParameterized::setParamRef(*asParams, "iofxAssetName", iofxAssetNamedRef);
+    NxParameterized::setParamRef(*asParams, "iosAssetName", iosAssetNamedRef);
 	
+	NxApexEmitterAsset* emitterAsset = static_cast<NxApexEmitterAsset*> (gApexSDK->createAsset(asParams, "sphere_emitter"));
+    
 	NxParameterized::Interface* descParams = emitterAsset->getDefaultActorDesc();
 	
 	PX_ASSERT(descParams);
@@ -91,7 +106,6 @@ void ApexParticles::CreateEmitter(NxApexSDK* gApexSDK, NxApexScene* gApexScene)
 		if(emitterActor)
 		{
 			emitterActor->setCurrentPosition(PxVec3(0.0f, 5.0f, 0.0f));
-			emitterActor->emitAssetParticles(true);
 			emitterActor->startEmit( true );
 		}
 	}
