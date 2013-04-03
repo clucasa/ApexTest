@@ -30,7 +30,8 @@ ID3D11Buffer *pIBuffer;                // the pointer to the index buffer
 ID3D11Buffer *pCBuffer;                // the pointer to the constant buffer
 ID3D11ShaderResourceView *pTexture;    // the pointer to the texture
 
-
+D3DXMATRIX mMatProjection;
+D3DXMATRIX mMatView;
 
 // a struct to define a single vertex
 struct VERTEX {FLOAT X, Y, Z; D3DXVECTOR3 Normal; FLOAT U, V;};
@@ -45,6 +46,16 @@ struct CBUFFER
     D3DXCOLOR AmbientColor;
 };
 
+struct CAMERA
+{
+	float x,  y, z;
+	float vx, vy,   vz;
+	float rx, ry,   rz;
+	bool moving;
+};
+
+struct CAMERA mCam;
+
 // function prototypes
 void InitD3D(HWND hWnd);    // sets up and initializes Direct3D
 void RenderFrame(void);     // renders a single frame
@@ -52,6 +63,7 @@ void CleanD3D(void);        // closes Direct3D and releases memory
 void InitGraphics(void);    // creates the shape to render
 void InitPipeline(void);    // loads and prepares the shaders
 bool InitApex(ID3D11DeviceContext* devcon, ID3D11Device* dev);
+void RecalculateView();
 
 // the WindowProc function prototype
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -126,6 +138,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	float movement = 1.0f;
     switch(message)
     {
         case WM_DESTROY:
@@ -133,6 +146,31 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
                 PostQuitMessage(0);
                 return 0;
             } break;
+		case WM_KEYDOWN:
+			{
+				switch(wParam)
+				{
+				case 0x57: // W
+					mCam.z -= movement;
+					break;
+				case 0x53: // S
+					mCam.z += movement;
+					break; 
+				case 0x41: // A
+					mCam.x -= movement;
+					break;
+				case 0x44: // D
+					mCam.x += movement;
+					break;
+				}
+			} break;
+		case WM_KEYUP:
+			{
+				switch(wParam)
+				{
+
+				}
+			} break;
     }
 
     return DefWindowProc (hWnd, message, wParam, lParam);
@@ -223,8 +261,14 @@ void InitD3D(HWND hWnd)
     viewport.MaxDepth = 1;    // the farthest an object can be on the depth buffer is 1.0
 
     devcon->RSSetViewports(1, &viewport);
-
-    InitPipeline();
+	
+	mCam.x = 0.0f;
+	mCam.y = 2.0f;
+	mCam.z = 10.0f;
+	mCam.vx = mCam.vy = mCam.vz = mCam.rx = mCam.ry = mCam.rz = 0.0f;
+	mCam.moving = false;
+    
+	InitPipeline();
     InitGraphics();
 }
 
@@ -239,29 +283,21 @@ void RenderFrame(void)
     cBuffer.LightColor = D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f);
     cBuffer.AmbientColor = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
 
-    D3DXMATRIX matRotate, matView, matProjection;
+    D3DXMATRIX matRotate, matTrans;
     D3DXMATRIX matFinal;
 
     static float Time = 0.0f; Time += 0.0003f;
 
     // create a world matrices
-    D3DXMatrixRotationY(&matRotate, Time/2.0f);
+    D3DXMatrixRotationY(&matRotate, /*Time/2.0f*/0);
 
-    // create a view matrix
-    D3DXMatrixLookAtLH(&matView,
-                       &D3DXVECTOR3(0.0f, 3.0f, 5.0f),    // the camera position
-                       &D3DXVECTOR3(0.0f, 0.0f, 0.0f),    // the look-at position
-                       &D3DXVECTOR3(0.0f, 1.0f, 0.0f));   // the up direction
+	// move plane down
+	D3DXMatrixTranslation(&matTrans,0., -5.0f,0);
 
-    // create a projection matrix
-    D3DXMatrixPerspectiveFovLH(&matProjection,
-                               (FLOAT)D3DXToRadian(45),                    // field of view
-                               (FLOAT)SCREEN_WIDTH / (FLOAT)SCREEN_HEIGHT, // aspect ratio
-                               1.0f,                                       // near view-plane
-                               100.0f);                                    // far view-plane
+	RecalculateView();
 
     // load the matrices into the constant buffer
-    cBuffer.Final = matRotate * matView * matProjection;
+    cBuffer.Final = matRotate * matTrans * mMatView * mMatProjection;
     cBuffer.Rotation = matRotate;
 
     // clear the back buffer to a deep blue
@@ -318,38 +354,16 @@ void CleanD3D(void)
 // this is the function that creates the shape to render
 void InitGraphics()
 {
+	float size = 15.0f;
     // create vertices to represent the corners of the cube
     VERTEX OurVertices[] =
     {
-        {-1.0f, -1.0f, 1.0f, D3DXVECTOR3(0.0f, 0.0f, 1.0f), 0.0f, 0.0f},    // side 1
-        {1.0f, -1.0f, 1.0f, D3DXVECTOR3(0.0f, 0.0f, 1.0f), 0.0f, 1.0f},
-        {-1.0f, 1.0f, 1.0f, D3DXVECTOR3(0.0f, 0.0f, 1.0f), 1.0f, 0.0f},
-        {1.0f, 1.0f, 1.0f, D3DXVECTOR3(0.0f, 0.0f, 1.0f), 1.0f, 1.0f},
 
-        {-1.0f, -1.0f, -1.0f, D3DXVECTOR3(0.0f, 0.0f, -1.0f), 0.0f, 0.0f},    // side 2
-        {-1.0f, 1.0f, -1.0f, D3DXVECTOR3(0.0f, 0.0f, -1.0f), 0.0f, 1.0f},
-        {1.0f, -1.0f, -1.0f, D3DXVECTOR3(0.0f, 0.0f, -1.0f), 1.0f, 0.0f},
-        {1.0f, 1.0f, -1.0f, D3DXVECTOR3(0.0f, 0.0f, -1.0f), 1.0f, 1.0f},
+        {-size, 0.0f, -size, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f},    // side 4
+        {size, 0.0f, -size, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 0.0f, 1.0f},
+        {-size, 0.0f, size, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 1.0f, 0.0f},
+        {size, 0.0f, size, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 1.0f, 1.0f},
 
-        {-1.0f, 1.0f, -1.0f, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f},    // side 3
-        {-1.0f, 1.0f, 1.0f, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 0.0f, 1.0f},
-        {1.0f, 1.0f, -1.0f, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 1.0f, 0.0f},
-        {1.0f, 1.0f, 1.0f, D3DXVECTOR3(0.0f, 1.0f, 0.0f), 1.0f, 1.0f},
-
-        {-1.0f, -1.0f, -1.0f, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 0.0f, 0.0f},    // side 4
-        {1.0f, -1.0f, -1.0f, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 0.0f, 1.0f},
-        {-1.0f, -1.0f, 1.0f, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 1.0f, 0.0f},
-        {1.0f, -1.0f, 1.0f, D3DXVECTOR3(0.0f, -1.0f, 0.0f), 1.0f, 1.0f},
-
-        {1.0f, -1.0f, -1.0f, D3DXVECTOR3(1.0f, 0.0f, 0.0f), 0.0f, 0.0f},    // side 5
-        {1.0f, 1.0f, -1.0f, D3DXVECTOR3(1.0f, 0.0f, 0.0f), 0.0f, 1.0f},
-        {1.0f, -1.0f, 1.0f, D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1.0f, 0.0f},
-        {1.0f, 1.0f, 1.0f, D3DXVECTOR3(1.0f, 0.0f, 0.0f), 1.0f, 1.0f},
-
-        {-1.0f, -1.0f, -1.0f, D3DXVECTOR3(-1.0f, 0.0f, 0.0f), 0.0f, 0.0f},    // side 6
-        {-1.0f, -1.0f, 1.0f, D3DXVECTOR3(-1.0f, 0.0f, 0.0f), 0.0f, 1.0f},
-        {-1.0f, 1.0f, -1.0f, D3DXVECTOR3(-1.0f, 0.0f, 0.0f), 1.0f, 0.0f},
-        {-1.0f, 1.0f, 1.0f, D3DXVECTOR3(-1.0f, 0.0f, 0.0f), 1.0f, 1.0f},
     };
 
     // create the vertex buffer
@@ -357,7 +371,7 @@ void InitGraphics()
     ZeroMemory(&bd, sizeof(bd));
 
     bd.Usage = D3D11_USAGE_DYNAMIC;
-    bd.ByteWidth = sizeof(VERTEX) * 24;
+    bd.ByteWidth = sizeof(VERTEX) * 4;
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
@@ -373,23 +387,13 @@ void InitGraphics()
     // create the index buffer out of DWORDs
     DWORD OurIndices[] = 
     {
-        0, 1, 2,    // side 1
-        2, 1, 3,
-        4, 5, 6,    // side 2
-        6, 5, 7,
-        8, 9, 10,    // side 3
-        10, 9, 11,
-        12, 13, 14,    // side 4
-        14, 13, 15,
-        16, 17, 18,    // side 5
-        18, 17, 19,
-        20, 21, 22,    // side 6
-        22, 21, 23,
+        2, 1, 0,    // quad
+        3, 1, 2,
     };
 
     // create the index buffer
     bd.Usage = D3D11_USAGE_DYNAMIC;
-    bd.ByteWidth = sizeof(DWORD) * 36;
+    bd.ByteWidth = sizeof(DWORD) * 6;
     bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
     bd.MiscFlags = 0;
@@ -409,7 +413,19 @@ void InitGraphics()
 
 
     InitApex(devcon, dev);
+	
+	// create a projection matrix
+    D3DXMatrixPerspectiveFovLH(&mMatProjection,
+                               (FLOAT)D3DXToRadian(45),                    // field of view
+                               (FLOAT)SCREEN_WIDTH / (FLOAT)SCREEN_HEIGHT, // aspect ratio
+                               1.0f,                                       // near view-plane
+                               100.0f);                                    // far view-plane
 
+	// create a view matrix
+    D3DXMatrixLookAtLH(&mMatView,
+                       &D3DXVECTOR3(0.0f, 0.0f, 0.0f),    // the camera position
+                       &D3DXVECTOR3(0.0f, 0.0f, 0.0f),    // the look-at position
+                       &D3DXVECTOR3(0.0f, 1.0f, 0.0f));   // the up direction
 }
 
 
@@ -460,4 +476,13 @@ bool InitApex(ID3D11DeviceContext* devcon, ID3D11Device* dev)
     apexThisOne->Init(dev, devcon);
     apexThisOne->InitParticles();
     return true;
+}
+
+void RecalculateView()
+{
+	// create a view matrix
+    D3DXMatrixLookAtLH(&mMatView,
+						&D3DXVECTOR3(mCam.x, mCam.y, mCam.z),    // the camera position
+                       &D3DXVECTOR3(0.0f, 0.0f, 0.0f),    // the look-at position
+                       &D3DXVECTOR3(0.0f, 1.0f, 0.0f));   // the up direction
 }

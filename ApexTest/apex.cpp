@@ -162,19 +162,19 @@ bool Apex::InitPhysX()
 
 
     // Create a box
-    //PxReal density = 10.0f;
-    //PxTransform transform(PxVec3(0.0, 3.0, 0.0) , PxQuat::createIdentity());
-    //PxVec3 dimensions(2.5,2.5,2.5);
-    //PxBoxGeometry geometry(dimensions);
-    //PxRigidDynamic* boxActor = PxCreateDynamic(*mPhysics, transform, geometry, *defaultMaterial, density);
-    //if (!boxActor)
-    //    return false;
-    //
-    //boxActor->setLinearVelocity(PxVec3(0.0,0.0,0.0));
-    //boxActor->setAngularDamping((PxReal)0.95);
-    ////PxRigidBodyExt::updateMassAndInertia(*boxActor, density);
+    PxReal density = 10.0f;
+    PxTransform transform(PxVec3(0.0, 8.0, 0.0) , PxQuat::createIdentity());
+    PxVec3 dimensions(1.5,1.5,1.5);
+    PxBoxGeometry geometry(dimensions);
+    PxRigidDynamic* boxActor = PxCreateDynamic(*mPhysics, transform, geometry, *defaultMaterial, density);
+    if (!boxActor)
+        return false;
+    
+    boxActor->setLinearVelocity(PxVec3(0.0,0.0,0.0));
+    boxActor->setAngularDamping((PxReal)0.95);
+    //PxRigidBodyExt::updateMassAndInertia(*boxActor, density);
 
-    //mScene->addActor(*boxActor);
+    mScene->addActor(*boxActor);
     
     gRenderer = new ZeusRenderer();
 
@@ -209,5 +209,5 @@ bool Apex::InitParticles()
 
 void Apex::Render()
 {
-    gApexParticles->RenderVolume(
+    gApexParticles->RenderVolume(*gRenderer);
 }

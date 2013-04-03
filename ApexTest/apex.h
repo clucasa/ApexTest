@@ -49,7 +49,7 @@ private:
     physx::apex::NxUserRenderResourceManager*	m_renderResourceManager;
 
     ApexParticles*				gApexParticles;
-    ZeusRenderer*               gRenderer;
+    physx::apex::NxUserRenderer*               gRenderer;
 private:
     bool InitPhysX();
 
