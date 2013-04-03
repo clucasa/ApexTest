@@ -8,26 +8,26 @@ Apex::Apex() :
     mScene(0)
 
 {
-	return;
+    return;
 }
 
 Apex::~Apex()
 {
-	gApexScene->setPhysXScene(0);
+    gApexScene->setPhysXScene(0);
 
-	// Now, it's safe to release the NxScene...
-	gApexScene->fetchResults(true, NULL);                 // ensure scene is not busy
-	gApexScene->release();
-	mCpuDispatcher->release();
+    // Now, it's safe to release the NxScene...
+    gApexScene->fetchResults(true, NULL);                 // ensure scene is not busy
+    gApexScene->release();
+    mCpuDispatcher->release();
 
 
-	// remember to release the connection by manual in the end
+    // remember to release the connection by manual in the end
     if (pvdConnection)
             pvdConnection->release();
     mPhysics->release();
     mFoundation->release();
 
-	return;
+    return;
 }
 
 float mAccumulator = 0.0f;
@@ -36,14 +36,14 @@ float mCooldown = 0.0f;
 
 bool Apex::advance(float dt)
 {
-	mAccumulator  += dt;
+    mAccumulator  += dt;
     if(mAccumulator < mStepSize)
         return false;
 
     mAccumulator -= mStepSize;
 
-	if(mCooldown > 0.0f)
-		mCooldown -= mStepSize;
+    if(mCooldown > 0.0f)
+        mCooldown -= mStepSize;
 
     gApexScene->simulate(mStepSize);
     return true;
@@ -60,14 +60,16 @@ bool Apex::Init(ID3D11Device* dev, ID3D11DeviceContext* devcon)
         return false;
 
     // Init Apex
-	static PxDefaultErrorCallback gDefaultErrorCallback;
+    static PxDefaultErrorCallback gDefaultErrorCallback;
+    ZeusResourceCallback* rcallback = new ZeusResourceCallback();
     NxApexSDKDesc   apexDesc;
-	apexDesc.outputStream = &gDefaultErrorCallback;
+    apexDesc.outputStream = &gDefaultErrorCallback;
+    apexDesc.resourceCallback = rcallback;
     apexDesc.physXSDK = mPhysics;
     apexDesc.cooking = mCooking;
-	
-	m_renderResourceManager = new ZeusRenderResourceManager(dev,devcon);
-	apexDesc.renderResourceManager = m_renderResourceManager;
+    
+    m_renderResourceManager = new ZeusRenderResourceManager(dev,devcon);
+    apexDesc.renderResourceManager = m_renderResourceManager;
 
     if(apexDesc.isValid())
         gApexSDK = NxCreateApexSDK(apexDesc);
@@ -77,16 +79,16 @@ bool Apex::Init(ID3D11Device* dev, ID3D11DeviceContext* devcon)
     if(!gApexSDK)
         return false;
 
-	NxApexSceneDesc apexSceneDesc;
-	// Create the APEX scene...
-	
-	apexSceneDesc.scene = mScene;
-	if(apexSceneDesc.isValid())
-		gApexScene = gApexSDK->createScene(apexSceneDesc);
-	else
-		return false;
+    NxApexSceneDesc apexSceneDesc;
+    // Create the APEX scene...
+    
+    apexSceneDesc.scene = mScene;
+    if(apexSceneDesc.isValid())
+        gApexScene = gApexSDK->createScene(apexSceneDesc);
+    else
+        return false;
 
-	if(!gApexScene)
+    if(!gApexScene)
         return false;
 
     return true;
@@ -144,15 +146,15 @@ bool Apex::InitPhysX()
         return false;
 
     defaultMaterial = mPhysics->createMaterial(0.5f, 0.5f, 0.1f);    //static friction, dynamic friction, restitution
-	if(!defaultMaterial)
-		return false;
+    if(!defaultMaterial)
+        return false;
 
     // Create a plane
-    PxRigidStatic* plane = PxCreatePlane(*mPhysics, PxPlane(PxVec3(0,1,0), 0), *defaultMaterial);
-	if (!plane)
-		return false;
+    PxRigidStatic* plane = PxCreatePlane(*mPhysics, PxPlane(PxVec3(0,1,0), 5), *defaultMaterial);
+    if (!plane)
+        return false;
 
-	mScene->addActor(*plane);
+    mScene->addActor(*plane);
 
     // Create a heightfield
     PhysXHeightfield* heightfield = new PhysXHeightfield();
@@ -160,21 +162,21 @@ bool Apex::InitPhysX()
 
 
     // Create a box
-	PxReal density = 10.0f;
-	PxTransform transform(PxVec3(0.0, 50.0, 0.0) , PxQuat::createIdentity());
-	PxVec3 dimensions(2.5,2.5,2.5);
-	PxBoxGeometry geometry(dimensions);
-	PxRigidDynamic* boxActor = PxCreateDynamic(*mPhysics, transform, geometry, *defaultMaterial, density);
-	if (!boxActor)
-		return false;
-	
-	boxActor->setLinearVelocity(PxVec3(0.0,0.0,0.0));
-	boxActor->setAngularDamping((PxReal)0.95);
-	//PxRigidBodyExt::updateMassAndInertia(*boxActor, density);
+    //PxReal density = 10.0f;
+    //PxTransform transform(PxVec3(0.0, 3.0, 0.0) , PxQuat::createIdentity());
+    //PxVec3 dimensions(2.5,2.5,2.5);
+    //PxBoxGeometry geometry(dimensions);
+    //PxRigidDynamic* boxActor = PxCreateDynamic(*mPhysics, transform, geometry, *defaultMaterial, density);
+    //if (!boxActor)
+    //    return false;
+    //
+    //boxActor->setLinearVelocity(PxVec3(0.0,0.0,0.0));
+    //boxActor->setAngularDamping((PxReal)0.95);
+    ////PxRigidBodyExt::updateMassAndInertia(*boxActor, density);
 
-	mScene->addActor(*boxActor);
+    //mScene->addActor(*boxActor);
     
-
+    gRenderer = new ZeusRenderer();
 
     // check if PvdConnection manager is available on this platform
     if(mPhysics->getPvdConnectionManager() == NULL)
@@ -191,16 +193,21 @@ bool Apex::InitPhysX()
     pvdConnection = PxVisualDebuggerExt::createConnection(mPhysics->getPvdConnectionManager(),
         pvd_host_ip, port, timeout, connectionFlags);
 
-	mPhysics->getVisualDebugger()->setVisualDebuggerFlag(PxVisualDebuggerFlags::eTRANSMIT_CONTACTS, true);
+    mPhysics->getVisualDebugger()->setVisualDebuggerFlag(PxVisualDebuggerFlags::eTRANSMIT_CONTACTS, true);
 
     return true;
 }
 
 bool Apex::InitParticles()
 {
-	gApexParticles = new ApexParticles();
-	gApexParticles->Init(gApexSDK);
+    gApexParticles = new ApexParticles();
+    gApexParticles->Init(gApexSDK);
     gApexParticles->CreateEmitter(gApexSDK, gApexScene);
     
-	return true;
+    return true;
+}
+
+void Apex::Render()
+{
+    gApexParticles->RenderVolume(
 }

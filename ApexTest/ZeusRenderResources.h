@@ -56,14 +56,14 @@ private:
 class ZeusIndexBuffer : public physx::apex::NxUserRenderIndexBuffer
 {
 public:
-	
-	ZeusIndexBuffer(const physx::apex::NxUserRenderIndexBufferDesc& desc, ID3D11Device* dev, ID3D11DeviceContext* devcon);
-	virtual ~ZeusIndexBuffer(void);
+    
+    ZeusIndexBuffer(const physx::apex::NxUserRenderIndexBufferDesc& desc, ID3D11Device* dev, ID3D11DeviceContext* devcon);
+    virtual ~ZeusIndexBuffer(void);
 
     virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
 
 private:
-	virtual void writeBuffer(const void* srcData, physx::PxU32 srcStride, physx::PxU32 firstDestElement, physx::PxU32 numElements);
+    virtual void writeBuffer(const void* srcData, physx::PxU32 srcStride, physx::PxU32 firstDestElement, physx::PxU32 numElements);
     ID3D11Buffer*           mIndexBuffer;
     ID3D11Device*           mDevice;
     ID3D11DeviceContext*    mDevcon;
@@ -79,13 +79,13 @@ private:
 class ZeusSurfaceBuffer : public physx::apex::NxUserRenderSurfaceBuffer
 {
 public:
-	
-	ZeusSurfaceBuffer(const physx::apex::NxUserRenderSurfaceBufferDesc& desc);
-	virtual ~ZeusSurfaceBuffer(void);
+    
+    ZeusSurfaceBuffer(const physx::apex::NxUserRenderSurfaceBufferDesc& desc);
+    virtual ~ZeusSurfaceBuffer(void);
 
 
 private:
-	virtual void writeBuffer(const void* srcData, physx::PxU32 srcStride, physx::PxU32 firstDestElement, physx::PxU32 width, physx::PxU32 height, physx::PxU32 depth = 1);
+    virtual void writeBuffer(const void* srcData, physx::PxU32 srcStride, physx::PxU32 firstDestElement, physx::PxU32 width, physx::PxU32 height, physx::PxU32 depth = 1);
 
 };
 
@@ -96,12 +96,12 @@ private:
 class ZeusBoneBuffer : public physx::apex::NxUserRenderBoneBuffer
 {
 public:
-	
-	ZeusBoneBuffer(const physx::apex::NxUserRenderBoneBufferDesc& desc);
-	virtual ~ZeusBoneBuffer(void);
+    
+    ZeusBoneBuffer(const physx::apex::NxUserRenderBoneBufferDesc& desc);
+    virtual ~ZeusBoneBuffer(void);
 
 private:
-	virtual void writeBuffer(const physx::apex::NxApexRenderBoneBufferData& data, physx::PxU32 firstBone, physx::PxU32 numBones);
+    virtual void writeBuffer(const physx::apex::NxApexRenderBoneBufferData& data, physx::PxU32 firstBone, physx::PxU32 numBones);
 };
 
 /*******************************
@@ -111,24 +111,24 @@ private:
 class ZeusInstanceBuffer : public physx::apex::NxUserRenderInstanceBuffer
 {
 public:
-	
-	ZeusInstanceBuffer(const physx::apex::NxUserRenderInstanceBufferDesc& desc);
-	virtual ~ZeusInstanceBuffer(void);
+    
+    ZeusInstanceBuffer(const physx::apex::NxUserRenderInstanceBufferDesc& desc);
+    virtual ~ZeusInstanceBuffer(void);
 
-	virtual void writeBuffer(const physx::apex::NxApexRenderInstanceBufferData& data, physx::PxU32 firstInstance, physx::PxU32 numInstances);
+    virtual void writeBuffer(const physx::apex::NxApexRenderInstanceBufferData& data, physx::PxU32 firstInstance, physx::PxU32 numInstances);
 
-	virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
+    virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
 private:
-	// not sure if I should make a d3d11 buffer for this or not...
-	struct InstanceBuffer{
-		physx::PxVec3			Position;
-		physx::PxVec3			Rotate;
-		physx::PxVec3			Scale;
-		physx::PxVec4			VelocityLife;
-		physx::PxU32			Density;
-	};
-	physx::PxU32						mMaxInstances;
-	struct InstanceBuffer*				mInstanceBuffer;
+    // not sure if I should make a d3d11 buffer for this or not...
+    struct InstanceBuffer{
+        physx::PxVec3			Position;
+        physx::PxVec3			Rotate;
+        physx::PxVec3			Scale;
+        physx::PxVec4			VelocityLife;
+        physx::PxU32			Density;
+    };
+    physx::PxU32						mMaxInstances;
+    struct InstanceBuffer*				mInstanceBuffer;
 };
 
 /*******************************
@@ -138,14 +138,14 @@ private:
 class ZeusSpriteBuffer : public physx::apex::NxUserRenderSpriteBuffer
 {
 public:
-	
-	ZeusSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDesc& desc);
-	virtual ~ZeusSpriteBuffer(void);
+    
+    ZeusSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDesc& desc);
+    virtual ~ZeusSpriteBuffer(void);
 
-	virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
+    virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
 
 private:
-	virtual void writeBuffer(const physx::apex::NxApexRenderSpriteBufferData& data, physx::PxU32 firstSprite, physx::PxU32 numSprites);
+    virtual void writeBuffer(const physx::apex::NxApexRenderSpriteBufferData& data, physx::PxU32 firstSprite, physx::PxU32 numSprites);
 
 };
 
@@ -157,67 +157,73 @@ private:
 class ZeusRenderResource : public physx::apex::NxUserRenderResource
 {
 public:
-	
-	ZeusRenderResource(const physx::apex::NxUserRenderResourceDesc& desc);
-	virtual ~ZeusRenderResource();
+    
+    ZeusRenderResource(const physx::apex::NxUserRenderResourceDesc& desc);
+    virtual ~ZeusRenderResource();
 
 public:
-	void setVertexBufferRange(physx::PxU32 firstVertex, physx::PxU32 numVerts);
-	void setIndexBufferRange(physx::PxU32 firstIndex, physx::PxU32 numIndices);
-	void setBoneBufferRange(physx::PxU32 firstBone, physx::PxU32 numBones);
-	void setInstanceBufferRange(physx::PxU32 firstInstance, physx::PxU32 numInstances);
-	void setSpriteBufferRange(physx::PxU32 firstSprite, physx::PxU32 numSprites);
+    void setVertexBufferRange(physx::PxU32 firstVertex, physx::PxU32 numVerts);
+    void setIndexBufferRange(physx::PxU32 firstIndex, physx::PxU32 numIndices);
+    void setBoneBufferRange(physx::PxU32 firstBone, physx::PxU32 numBones);
+    void setInstanceBufferRange(physx::PxU32 firstInstance, physx::PxU32 numInstances);
+    void setSpriteBufferRange(physx::PxU32 firstSprite, physx::PxU32 numSprites);
 
-	virtual void setMaterial(void* material);
+    virtual void setMaterial(void* material);
 
-	physx::PxU32 getNbVertexBuffers() const
-	{
-		return mNumVertexBuffers;
-	}
+    physx::PxU32 getNbVertexBuffers() const
+    {
+        return mNumVertexBuffers;
+    }
 
-	physx::apex::NxUserRenderVertexBuffer* getVertexBuffer(physx::PxU32 index) const
-	{
-		physx::apex::NxUserRenderVertexBuffer* buffer = 0;
-		PX_ASSERT(index < mNumVertexBuffers);
-		if (index < mNumVertexBuffers)
-		{
-			buffer = mVertexBuffers[index];
-		}
-		return buffer;
-	}
+    physx::apex::NxUserRenderVertexBuffer* getVertexBuffer(physx::PxU32 index) const
+    {
+        physx::apex::NxUserRenderVertexBuffer* buffer = 0;
+        PX_ASSERT(index < mNumVertexBuffers);
+        if (index < mNumVertexBuffers)
+        {
+            buffer = mVertexBuffers[index];
+        }
+        return buffer;
+    }
 
-	physx::apex::NxUserRenderIndexBuffer* getIndexBuffer() const
-	{
-		return mIndexBuffer;
-	}
+    physx::apex::NxUserRenderIndexBuffer* getIndexBuffer() const
+    {
+        return mIndexBuffer;
+    }
 
-	physx::apex::NxUserRenderBoneBuffer* getBoneBuffer()	const
-	{
-		return mBoneBuffer;
-	}
+    physx::apex::NxUserRenderBoneBuffer* getBoneBuffer()	const
+    {
+        return mBoneBuffer;
+    }
 
-	physx::apex::NxUserRenderInstanceBuffer* getInstanceBuffer()	const
-	{
-		return mInstanceBuffer;
-	}
+    physx::apex::NxUserRenderInstanceBuffer* getInstanceBuffer()	const
+    {
+        return mInstanceBuffer;
+    }
 
-	physx::apex::NxUserRenderSpriteBuffer* getSpriteBuffer()	const
-	{
-		return mSpriteBuffer;
-	}
+    physx::apex::NxUserRenderSpriteBuffer* getSpriteBuffer()	const
+    {
+        return mSpriteBuffer;
+    }
 
 private:
-	ZeusVertexBuffer**			mVertexBuffers;
-	physx::PxU32				mNumVertexBuffers;
-	
-	ZeusIndexBuffer*			mIndexBuffer;
+    ZeusVertexBuffer**			mVertexBuffers;
+    physx::PxU32				mNumVertexBuffers;
+    
+    ZeusIndexBuffer*			mIndexBuffer;
 
-	ZeusBoneBuffer*				mBoneBuffer;
+    ZeusBoneBuffer*				mBoneBuffer;
 
-	ZeusInstanceBuffer*			mInstanceBuffer;
+    ZeusInstanceBuffer*			mInstanceBuffer;
 
-	ZeusSpriteBuffer*			mSpriteBuffer;
+    ZeusSpriteBuffer*			mSpriteBuffer;
 };
 
+class ZeusRenderer : public physx::apex::NxUserRenderer
+{
+public:
+    ZeusRenderer();
+    virtual void renderResource(const physx::apex::NxApexRenderContext& context);
+};
 
 #endif

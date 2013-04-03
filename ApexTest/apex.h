@@ -12,6 +12,7 @@
 //#include "NxApexSDK.h"
 #include "ZeusRenderResourceManager.h"
 #include "ApexParticles.h"
+#include "ZeusResourceCallback.h"
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dx10.h>
@@ -32,21 +33,23 @@ using namespace debugger;
 class Apex
 {
 public:
-	Apex();
-	~Apex();
+    Apex();
+    ~Apex();
 
     bool Init(ID3D11Device* dev, ID3D11DeviceContext* devcon);
-	bool InitParticles();
+    bool InitParticles();
 
     bool advance(float dt);
     void fetch();
+
+    void Render();
 private:
     NxApexSDK*                  gApexSDK;
     NxApexScene*                gApexScene;
-	physx::apex::NxUserRenderResourceManager*	m_renderResourceManager;
+    physx::apex::NxUserRenderResourceManager*	m_renderResourceManager;
 
-	ApexParticles*				gApexParticles;
-
+    ApexParticles*				gApexParticles;
+    ZeusRenderer*               gRenderer;
 private:
     bool InitPhysX();
 
@@ -58,7 +61,7 @@ private:
     PxDefaultCpuDispatcher*     mCpuDispatcher;
     PxU32                       mNbThreads;
     PxMaterial*					defaultMaterial;
-	PVD::PvdConnection*	        pvdConnection;
+    PVD::PvdConnection*	        pvdConnection;
 };
 
 #endif

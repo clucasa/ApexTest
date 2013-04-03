@@ -24,6 +24,9 @@
     <Filter Include="Source Files\Apex\PhysXHeightField">
       <UniqueIdentifier>{242a9e9e-07cb-41f7-b5c1-012165e44d7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Apex\ResourceCallback">
+      <UniqueIdentifier>{b29e21c1-b331-482e-93e2-2414fa9b2376}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -43,6 +46,9 @@
     </ClCompile>
     <ClCompile Include="PhysXHeightField.cpp">
       <Filter>Source Files\Apex\PhysXHeightField</Filter>
+    </ClCompile>
+    <ClCompile Include="ZeusResourceCallback.cpp">
+      <Filter>Source Files\Apex\ResourceCallback</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="PhysXHeightField.h">
       <Filter>Source Files\Apex\PhysXHeightField</Filter>
+    </ClInclude>
+    <ClInclude Include="ZeusResourceCallback.h">
+      <Filter>Source Files\Apex\ResourceCallback</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

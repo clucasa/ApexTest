@@ -270,24 +270,27 @@ void RenderFrame(void)
     // clear the depth buffer
     devcon->ClearDepthStencilView(zbuffer, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-        // select which vertex buffer to display
-        UINT stride = sizeof(VERTEX);
-        UINT offset = 0;
-        devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
-        devcon->IASetIndexBuffer(pIBuffer, DXGI_FORMAT_R32_UINT, 0);
+    // select which vertex buffer to display
+    UINT stride = sizeof(VERTEX);
+    UINT offset = 0;
+    devcon->IASetVertexBuffers(0, 1, &pVBuffer, &stride, &offset);
+    devcon->IASetIndexBuffer(pIBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-        // select which primtive type we are using
-        devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    // select which primtive type we are using
+    devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-        // draw the Hypercraft
-        devcon->UpdateSubresource(pCBuffer, 0, 0, &cBuffer, 0, 0);
-        devcon->PSSetShaderResources(0, 1, &pTexture);
-        devcon->DrawIndexed(36, 0, 0);
+    // draw the Hypercraft
+    devcon->UpdateSubresource(pCBuffer, 0, 0, &cBuffer, 0, 0);
+    devcon->PSSetShaderResources(0, 1, &pTexture);
+    devcon->DrawIndexed(36, 0, 0);
+
+    if(fetch)
+        apexThisOne->fetch();
+
+    apexThisOne->Render();
 
     // switch the back buffer and the front buffer
     swapchain->Present(0, 0);
-    if(fetch)
-		apexThisOne->fetch();
 }
 
 
@@ -405,7 +408,7 @@ void InitGraphics()
                                        NULL);          // no multithreading
 
 
-	InitApex(devcon, dev);
+    InitApex(devcon, dev);
 
 }
 
@@ -453,7 +456,7 @@ void InitPipeline()
 
 bool InitApex(ID3D11DeviceContext* devcon, ID3D11Device* dev)
 {
-	apexThisOne = new Apex();
+    apexThisOne = new Apex();
     apexThisOne->Init(dev, devcon);
     apexThisOne->InitParticles();
     return true;

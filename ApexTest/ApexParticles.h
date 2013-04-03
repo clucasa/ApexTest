@@ -20,6 +20,7 @@
 #include "NxApexEmitterActor.h"
 #include "NxParticleIosAsset.h"
 #include "NxIofxAsset.h"
+#include <NxApexRenderVolume.h>
 
 #include <vector>
 
@@ -35,10 +36,14 @@ public:
     void Init(NxApexSDK* gApexSDK);
     void CreateEmitter(NxApexSDK* gApexSDK, NxApexScene* gApexScene);
 
+    bool RenderVolume(physx::apex::NxUserRenderer & renderer);
+
 private:
     NxModuleParticleIos*        mParticleIosModule;
     NxModuleEmitter*            mEmitterModule;
     NxModuleIofx*               mIofxModule;
+
+    physx::apex::NxApexRenderVolume*         mRenderVolume;
 
     bool checkErrorCode(NxApexCreateError* err);
 };

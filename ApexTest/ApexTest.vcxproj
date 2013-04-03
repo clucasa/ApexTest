@@ -110,6 +110,7 @@
     <ClCompile Include="PhysXHeightField.cpp" />
     <ClCompile Include="ZeusRenderResources.cpp" />
     <ClCompile Include="ZeusRenderResourceManager.cpp" />
+    <ClCompile Include="ZeusResourceCallback.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders.hlsl" />
@@ -120,6 +121,7 @@
     <ClInclude Include="PhysXHeightField.h" />
     <ClInclude Include="ZeusRenderResources.h" />
     <ClInclude Include="ZeusRenderResourceManager.h" />
+    <ClInclude Include="ZeusResourceCallback.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
