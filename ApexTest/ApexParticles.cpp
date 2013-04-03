@@ -64,7 +64,7 @@ void ApexParticles::Init(NxApexSDK* gApexSDK)
 
 void ApexParticles::CreateEmitter(NxApexSDK* gApexSDK, NxApexScene* gApexScene)
 {
-    NxParticleIosAssetAuthoring* particleAuthoring = static_cast<NxParticleIosAssetAuthoring*> (gApexSDK->createAssetAuthoring(NX_PARTICLE_IOS_AUTHORING_TYPE_NAME));
+    /*NxParticleIosAssetAuthoring* particleAuthoring = static_cast<NxParticleIosAssetAuthoring*> (gApexSDK->createAssetAuthoring(NX_PARTICLE_IOS_AUTHORING_TYPE_NAME));
     NxIofxAssetAuthoring* iofxAuthoring = static_cast<NxIofxAssetAuthoring*> (gApexSDK->createAssetAuthoring(NX_IOFX_AUTHORING_TYPE_NAME));
     
     NxParameterized::Interface* iosParams = particleAuthoring->releaseAndReturnNxParameterizedInterface();
@@ -78,15 +78,15 @@ void ApexParticles::CreateEmitter(NxApexSDK* gApexSDK, NxApexScene* gApexScene)
     iosAssetNamedRef->setName(iosAsset->getAssetNxParameterized()->name());
     NxParameterized::Interface* iofxAssetNamedRef = 0;
     iofxAssetNamedRef->initDefaults();
-    iofxAssetNamedRef->setName(iofxAsset->getAssetNxParameterized()->name());
+    iofxAssetNamedRef->setName(iofxAsset->getAssetNxParameterized()->name());*/
 
 
     NxApexAssetAuthoring* assetauthoring = gApexSDK->createAssetAuthoring(NX_APEX_EMITTER_AUTHORING_TYPE_NAME);
     NxParameterized::Interface* asParams = assetauthoring->releaseAndReturnNxParameterizedInterface();
   
 	// Set the asset's type
-    NxParameterized::setParamRef(*asParams, "iofxAssetName", iofxAssetNamedRef);
-    NxParameterized::setParamRef(*asParams, "iosAssetName", iosAssetNamedRef);
+    //NxParameterized::setParamRef(*asParams, "iofxAssetName", iofxAssetNamedRef);
+    //NxParameterized::setParamRef(*asParams, "iosAssetName", iosAssetNamedRef);
 	
 	NxApexEmitterAsset* emitterAsset = static_cast<NxApexEmitterAsset*> (gApexSDK->createAsset(asParams, "sphere_emitter"));
     
