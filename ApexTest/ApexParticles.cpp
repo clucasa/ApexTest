@@ -64,30 +64,6 @@ void ApexParticles::Init(NxApexSDK* gApexSDK)
 
 void ApexParticles::CreateEmitter(NxApexSDK* gApexSDK, NxApexScene* gApexScene)
 {
-    /*NxParticleIosAssetAuthoring* particleAuthoring = static_cast<NxParticleIosAssetAuthoring*> (gApexSDK->createAssetAuthoring(NX_PARTICLE_IOS_AUTHORING_TYPE_NAME));
-    NxIofxAssetAuthoring* iofxAuthoring = static_cast<NxIofxAssetAuthoring*> (gApexSDK->createAssetAuthoring(NX_IOFX_AUTHORING_TYPE_NAME));
-    
-    NxParameterized::Interface* iosParams = particleAuthoring->releaseAndReturnNxParameterizedInterface();
-    NxParameterized::Interface* iofxParams = iofxAuthoring->releaseAndReturnNxParameterizedInterface();
-
-    NxParticleIosAsset* iosAsset = static_cast<NxParticleIosAsset*> (gApexSDK->createAsset(iosParams, "zeus_ios"));
-    NxIofxAsset* iofxAsset = static_cast<NxIofxAsset*> (gApexSDK->createAsset(iofxParams, "zeus_iofx"));
-    
-    NxParameterized::Interface* iosAssetNamedRef = 0;
-    iosAssetNamedRef->initDefaults();
-    iosAssetNamedRef->setName(iosAsset->getAssetNxParameterized()->name());
-    NxParameterized::Interface* iofxAssetNamedRef = 0;
-    iofxAssetNamedRef->initDefaults();
-    iofxAssetNamedRef->setName(iofxAsset->getAssetNxParameterized()->name());
-*/
-
-    //NxApexAssetAuthoring* assetauthoring = gApexSDK->createAssetAuthoring(NX_APEX_EMITTER_AUTHORING_TYPE_NAME);
-    //NxParameterized::Interface* asParams = assetauthoring->releaseAndReturnNxParameterizedInterface();
-  
-    // Set the asset's type
-    //NxParameterized::setParamRef(*asParams, "iofxAssetName", iofxAssetNamedRef);
-    //NxParameterized::setParamRef(*asParams, "iosAssetName", iosAssetNamedRef);
-    
     NxApexEmitterAsset* emitterAsset;
     physx::apex::NxApexAsset* asset = reinterpret_cast<physx::apex::NxApexAsset*>(gApexSDK->getNamedResourceProvider()->getResource(NX_APEX_EMITTER_AUTHORING_TYPE_NAME, "testSpriteEmitter4ParticleFluidIos"));
     if (asset)
@@ -132,8 +108,9 @@ bool ApexParticles::RenderVolume(physx::apex::NxUserRenderer & renderer)
   
     mRenderVolume->updateRenderResources(false);
     mRenderVolume->dispatchRenderResources(renderer);
-
-    mRenderVolume->unlockRenderResources();
+    
+	mRenderVolume->unlockRenderResources();
+	return true;
 }
 
 bool ApexParticles::checkErrorCode(NxApexCreateError* err)

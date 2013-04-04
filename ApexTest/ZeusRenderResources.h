@@ -139,14 +139,17 @@ class ZeusSpriteBuffer : public physx::apex::NxUserRenderSpriteBuffer
 {
 public:
     
-    ZeusSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDesc& desc);
+    ZeusSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDesc& desc, ID3D11Device* dev, ID3D11DeviceContext* devcon);
     virtual ~ZeusSpriteBuffer(void);
 
     virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
 
 private:
     virtual void writeBuffer(const physx::apex::NxApexRenderSpriteBufferData& data, physx::PxU32 firstSprite, physx::PxU32 numSprites);
-
+	ID3D11Buffer*           mSpriteBuffer;
+    ID3D11Device*           mDevice;
+    ID3D11DeviceContext*    mDevcon;
+    int                     mStride;
 };
 
 

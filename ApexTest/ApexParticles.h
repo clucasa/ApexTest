@@ -22,6 +22,8 @@
 #include "NxIofxAsset.h"
 #include <NxApexRenderVolume.h>
 
+//#include "ZeusRenderResources.h"
+
 #include <vector>
 
 using namespace std;

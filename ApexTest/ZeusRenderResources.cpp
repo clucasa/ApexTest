@@ -289,14 +289,51 @@ bool ZeusInstanceBuffer::getInteropResourceHandle(CUgraphicsResource& handle)
 * ZeusSpriteBuffer
 *********************************/
 
-ZeusSpriteBuffer::ZeusSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDesc& desc)
+ZeusSpriteBuffer::ZeusSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDesc& desc, ID3D11Device* dev, ID3D11DeviceContext* devcon) :
+    mDevice(dev), mStride(0), mDevcon(devcon)
 {
+    
+    for (physx::PxU32 i = 0; i < physx::apex::NxRenderSpriteSemantic::NUM_SEMANTICS; i++)
+    {
+        physx::apex::NxRenderSpriteSemantic::Enum apexSemantic = physx::apex::NxRenderSpriteSemantic::Enum(i);
+		physx::apex::NxRenderDataFormat::Enum apexFormat = desc.semanticFormats[i];
+     
+        if (apexFormat != physx::apex::NxRenderDataFormat::UNSPECIFIED)
+        {
+            mStride += physx::apex::NxRenderDataFormat::getFormatDataSize(apexFormat);
+        }
+    }
 
+    D3D11_BUFFER_DESC d3ddesc;
+    d3ddesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	d3ddesc.ByteWidth = desc.maxSprites * mStride;
+    d3ddesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    d3ddesc.MiscFlags = 0;
+
+    if(desc.hint == NxRenderBufferHint::STATIC)
+    {
+        d3ddesc.Usage = D3D11_USAGE_DEFAULT;
+    }
+    else if(desc.hint == NxRenderBufferHint::DYNAMIC)
+    {
+        d3ddesc.Usage = D3D11_USAGE_DYNAMIC;
+    }
+    else if(desc.hint == NxRenderBufferHint::STREAMING)
+    {
+        d3ddesc.Usage = D3D11_USAGE_DYNAMIC; //Until I know what better to use
+    }
+    else
+        return;
+
+    mDevice->CreateBuffer(&d3ddesc, NULL, &mSpriteBuffer);
 }
 
 ZeusSpriteBuffer::~ZeusSpriteBuffer(void)
 {
-
+	if(mSpriteBuffer)
+	{
+		mSpriteBuffer->Release();
+	}
 }
 
 bool ZeusSpriteBuffer::getInteropResourceHandle(CUgraphicsResource& handle)
@@ -306,7 +343,40 @@ bool ZeusSpriteBuffer::getInteropResourceHandle(CUgraphicsResource& handle)
 
 void ZeusSpriteBuffer::writeBuffer(const physx::apex::NxApexRenderSpriteBufferData& data, physx::PxU32 firstSprite, physx::PxU32 numSprites)
 {
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+    HRESULT result;
+    physx::apex::NxApexRenderSemanticData* verticesPtr;
+    physx::apex::NxApexRenderSemanticData* srcData = (physx::apex::NxApexRenderSemanticData*) malloc(mStride*numSprites);
+    // Lock the vertex buffer so it can be written to.
+    result = mDevcon->Map(mSpriteBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+    if(FAILED(result))
+    {
+        return;
+    }
 
+    // Get a pointer to the data in the vertex buffer.
+    verticesPtr = (physx::apex::NxApexRenderSemanticData*)mappedResource.pData + (firstSprite * mStride);
+    
+    // Copy the data into the vertex buffer.
+    
+
+    for(physx::PxU32 i = 0; i < numSprites; i++)
+    {
+        for (physx::PxU32 j = 0; j < physx::apex::NxRenderSpriteSemantic::NUM_SEMANTICS; j++)
+        {
+            physx::apex::NxRenderSpriteSemantic::Enum apexSemantic = (physx::apex::NxRenderSpriteSemantic::Enum)j;
+            const physx::apex::NxApexRenderSemanticData& semanticData = data.getSemanticData(apexSemantic);
+            if (semanticData.data)
+            {
+                memcpy(srcData + (mStride * i), semanticData.data, semanticData.stride);
+            }
+        }
+    }
+
+    memcpy(verticesPtr, srcData, (mStride * numSprites));
+
+    // Unlock the vertex buffer.
+    mDevcon->Unmap(mSpriteBuffer, 0);
 }
 
 

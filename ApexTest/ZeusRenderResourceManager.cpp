@@ -88,7 +88,7 @@ void ZeusRenderResourceManager::releaseInstanceBuffer(physx::apex::NxUserRenderI
 
 physx::apex::NxUserRenderSpriteBuffer* ZeusRenderResourceManager::createSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDesc& desc)
 {
-    ZeusSpriteBuffer* buffer = 0;
+    ZeusSpriteBuffer* buffer = new ZeusSpriteBuffer(desc, mDevice, mDevcon);
 	m_numSpriteBuffers++;
 	return (NxUserRenderSpriteBuffer*)buffer;
 }
