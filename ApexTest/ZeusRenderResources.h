@@ -144,9 +144,13 @@ public:
 
     virtual bool getInteropResourceHandle(CUgraphicsResource& handle);
 
+	void Render(int start, int count);
+
 private:
     virtual void writeBuffer(const physx::apex::NxApexRenderSpriteBufferData& data, physx::PxU32 firstSprite, physx::PxU32 numSprites);
 	ID3D11Buffer*           mSpriteBuffer;
+	ID3D11Buffer*           mTestBuffer;
+
     ID3D11Device*           mDevice;
     ID3D11DeviceContext*    mDevcon;
     int                     mStride;
@@ -170,6 +174,8 @@ public:
     void setBoneBufferRange(physx::PxU32 firstBone, physx::PxU32 numBones);
     void setInstanceBufferRange(physx::PxU32 firstInstance, physx::PxU32 numInstances);
     void setSpriteBufferRange(physx::PxU32 firstSprite, physx::PxU32 numSprites);
+
+	void Render();
 
     virtual void setMaterial(void* material);
 
@@ -220,6 +226,8 @@ private:
     ZeusInstanceBuffer*			mInstanceBuffer;
 
     ZeusSpriteBuffer*			mSpriteBuffer;
+	int							mSpriteStart;
+	int							mSpriteCount;
 };
 
 class ZeusRenderer : public physx::apex::NxUserRenderer

@@ -300,7 +300,8 @@ ZeusSpriteBuffer::ZeusSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDe
      
         if (apexFormat != physx::apex::NxRenderDataFormat::UNSPECIFIED)
         {
-            mStride += physx::apex::NxRenderDataFormat::getFormatDataSize(apexFormat);
+			if(apexSemantic == physx::apex::NxRenderSpriteSemantic::POSITION) // For right now only doing position
+				mStride += physx::apex::NxRenderDataFormat::getFormatDataSize(apexFormat);
         }
     }
 
@@ -325,7 +326,30 @@ ZeusSpriteBuffer::ZeusSpriteBuffer(const physx::apex::NxUserRenderSpriteBufferDe
     else
         return;
 
-    mDevice->CreateBuffer(&d3ddesc, NULL, &mSpriteBuffer);
+    HRESULT hResult = mDevice->CreateBuffer(&d3ddesc, NULL, &mSpriteBuffer);
+
+	D3D11_BUFFER_DESC testbufdesc;
+    testbufdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	testbufdesc.ByteWidth = (sizeof( float ) * 3) * 5;
+    testbufdesc.CPUAccessFlags = 0;
+    testbufdesc.MiscFlags = 0;
+	testbufdesc.Usage = D3D11_USAGE_DEFAULT;
+
+	float data[5][3];
+	data[0][0] = -2.0f; data[0][1] = 1.0f; data[0][2] = 0.0f;
+	data[1][0] = -1.0f; data[1][1] = 1.0f; data[1][2] = 0.0f;
+	data[2][0] = 0.0f; data[2][1] = 1.0f; data[2][2] = 0.0f;
+	data[3][0] = 1.0f; data[3][1] = 1.0f; data[3][2] = 0.0f;
+	data[4][0] = 2.0f; data[4][1] = 1.0f; data[4][2] = 0.0f;
+
+	// Fill in the subresource data.
+	D3D11_SUBRESOURCE_DATA InitData;
+	InitData.pSysMem = data;
+	InitData.SysMemPitch = 0;
+	InitData.SysMemSlicePitch = 0;
+
+
+	hResult = mDevice->CreateBuffer(&testbufdesc, &InitData, &mTestBuffer);
 }
 
 ZeusSpriteBuffer::~ZeusSpriteBuffer(void)
@@ -339,6 +363,17 @@ ZeusSpriteBuffer::~ZeusSpriteBuffer(void)
 bool ZeusSpriteBuffer::getInteropResourceHandle(CUgraphicsResource& handle)
 {
     return false;
+}
+
+void ZeusSpriteBuffer::Render(int start, int count)
+{
+	UINT stride = (UINT)mStride/*sizeof(float)*3*/;
+	UINT offset = 0;
+	mDevcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	mDevcon->IASetVertexBuffers(0, 1, &mSpriteBuffer/*mTestBuffer*/, &stride, &offset);   // Test buffer
+	
+	mDevcon->Draw(count, start);
+
 }
 
 void ZeusSpriteBuffer::writeBuffer(const physx::apex::NxApexRenderSpriteBufferData& data, physx::PxU32 firstSprite, physx::PxU32 numSprites)
@@ -358,7 +393,7 @@ void ZeusSpriteBuffer::writeBuffer(const physx::apex::NxApexRenderSpriteBufferDa
     verticesPtr = (physx::apex::NxApexRenderSemanticData*)mappedResource.pData + (firstSprite * mStride);
     
     // Copy the data into the vertex buffer.
-    
+	
 
     for(physx::PxU32 i = 0; i < numSprites; i++)
     {
@@ -368,7 +403,8 @@ void ZeusSpriteBuffer::writeBuffer(const physx::apex::NxApexRenderSpriteBufferDa
             const physx::apex::NxApexRenderSemanticData& semanticData = data.getSemanticData(apexSemantic);
             if (semanticData.data)
             {
-                memcpy(srcData + (mStride * i), semanticData.data, semanticData.stride);
+				if(apexSemantic == physx::apex::NxRenderSpriteSemantic::POSITION)
+					memcpy(srcData + (mStride * i), semanticData.data, semanticData.stride);
             }
         }
     }
@@ -435,12 +471,21 @@ void ZeusRenderResource::setInstanceBufferRange(physx::PxU32 firstInstance, phys
 
 void ZeusRenderResource::setSpriteBufferRange(physx::PxU32 firstSprite, physx::PxU32 numSprites)
 {
-
+	mSpriteStart = firstSprite;
+	mSpriteCount = numSprites;
 }
 
 void ZeusRenderResource::setMaterial(void* material)
 {
 
+}
+
+void ZeusRenderResource::Render()
+{
+	if(mSpriteBuffer)
+	{
+		mSpriteBuffer->Render(mSpriteStart, mSpriteCount);
+	}
 }
 
 
@@ -457,8 +502,9 @@ void ZeusRenderer::renderResource(const physx::apex::NxApexRenderContext& contex
 {
     if (context.renderResource)
     {
+		
         //static_cast<SampleApexRendererMesh*>(context.renderResource)->render(context, mForceWireframe, mOverrideMaterial);
         //Render it here
-
+		static_cast<ZeusRenderResource*>(context.renderResource)->Render();
     }
 }

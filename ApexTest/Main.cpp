@@ -30,6 +30,12 @@ ID3D11Buffer *pIBuffer;                // the pointer to the index buffer
 ID3D11Buffer *pCBuffer;                // the pointer to the constant buffer
 ID3D11ShaderResourceView *pTexture;    // the pointer to the texture
 
+ID3D11InputLayout *pSpriteLayout;            // the pointer to the input layout
+ID3D11VertexShader *pSpriteVS;         // the pointer to the Sprite vertex shader
+ID3D11GeometryShader *pSpriteGS;	   // the pointer to the Sprite geometry shader
+ID3D11PixelShader *pSpritePS;          // the pointer to the Sprite pixel shader
+ID3D11Buffer *pSpriteCBuffer;          // the pointer to the Sprite constant buffer
+
 D3DXMATRIX mMatProjection;
 D3DXMATRIX mMatView;
 
@@ -44,6 +50,13 @@ struct CBUFFER
     D3DXVECTOR4 LightVector;
     D3DXCOLOR LightColor;
     D3DXCOLOR AmbientColor;
+};
+
+struct SPRITECBUFFER
+{
+	D3DXMATRIX Final;
+	D3DXVECTOR3 EyePos;
+	float buffer;
 };
 
 struct CAMERA
@@ -263,8 +276,8 @@ void InitD3D(HWND hWnd)
     devcon->RSSetViewports(1, &viewport);
 	
 	mCam.x = 0.0f;
-	mCam.y = 2.0f;
-	mCam.z = 10.0f;
+	mCam.y = 1.5f;
+	mCam.z = -10.0f;
 	mCam.vx = mCam.vy = mCam.vz = mCam.rx = mCam.ry = mCam.rz = 0.0f;
 	mCam.moving = false;
     
@@ -278,6 +291,8 @@ void RenderFrame(void)
 {
     bool fetch = apexThisOne->advance(0.0003f);
     CBUFFER cBuffer;
+	SPRITECBUFFER scBuffer;
+
 
     cBuffer.LightVector = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 0.0f);
     cBuffer.LightColor = D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.0f);
@@ -300,6 +315,9 @@ void RenderFrame(void)
     cBuffer.Final = matRotate * matTrans * mMatView * mMatProjection;
     cBuffer.Rotation = matRotate;
 
+	scBuffer.Final = mMatView * mMatProjection;
+	scBuffer.EyePos = D3DXVECTOR3(mCam.x, mCam.y, mCam.z);
+
     // clear the back buffer to a deep blue
     devcon->ClearRenderTargetView(backbuffer, D3DXCOLOR(0.0f, 0.2f, 0.4f, 1.0f));
 
@@ -315,13 +333,31 @@ void RenderFrame(void)
     // select which primtive type we are using
     devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    // draw the Hypercraft
+    // set the shader objects
+    devcon->VSSetShader(pVS, 0, 0);
+	devcon->GSSetShader(NULL, 0, 0);
+    devcon->PSSetShader(pPS, 0, 0);
+	devcon->IASetInputLayout(pLayout);
+	devcon->VSSetConstantBuffers(0, 1, &pCBuffer);
+
+	// draw the floor
     devcon->UpdateSubresource(pCBuffer, 0, 0, &cBuffer, 0, 0);
     devcon->PSSetShaderResources(0, 1, &pTexture);
     devcon->DrawIndexed(36, 0, 0);
 
     if(fetch)
         apexThisOne->fetch();
+
+	// set the sprite shader objects
+    devcon->VSSetShader(pSpriteVS, 0, 0);
+    devcon->GSSetShader(pSpriteGS, 0, 0);
+    devcon->PSSetShader(pSpritePS, 0, 0);
+	devcon->IASetInputLayout(pSpriteLayout);
+	//devcon->VSSetConstantBuffers(0, 1, &pSpriteCBuffer);
+	devcon->GSSetConstantBuffers(0, 1, &pSpriteCBuffer);
+
+	
+	devcon->UpdateSubresource(pSpriteCBuffer, 0, 0, &scBuffer, 0, 0);
 
     apexThisOne->Render();
 
@@ -343,6 +379,11 @@ void CleanD3D(void)
     pVBuffer->Release();
     pIBuffer->Release();
     pCBuffer->Release();
+	pSpriteLayout->Release(); 
+	pSpriteVS->Release();
+	pSpriteGS->Release();
+	pSpritePS->Release(); 
+	pSpriteCBuffer->Release();
     pTexture->Release();
     swapchain->Release();
     backbuffer->Release();
@@ -433,17 +474,25 @@ void InitGraphics()
 void InitPipeline()
 {
     // compile the shaders
-    ID3D10Blob *VS, *PS;
-    D3DX11CompileFromFile("shaders.hlsl", 0, 0, "VShader", "vs_5_0", 0, 0, 0, &VS, 0, 0);
-    D3DX11CompileFromFile("shaders.hlsl", 0, 0, "PShader", "ps_5_0", 0, 0, 0, &PS, 0, 0);
+    ID3D10Blob *VS, *PS, *sVS, *sPS, *sGS;
+    HRESULT result = D3DX11CompileFromFile("shaders.hlsl", 0, 0, "VShader", "vs_5_0", 0, 0, 0, &VS, 0, 0);
+    result =  D3DX11CompileFromFile("shaders.hlsl", 0, 0, "PShader", "ps_5_0", 0, 0, 0, &PS, 0, 0);
+	
+	result = D3DX11CompileFromFile("spriteshader.hlsl", 0, 0, "VShader", "vs_5_0", 0, 0, 0, &sVS, 0, 0);
+
+    result = D3DX11CompileFromFile("spriteshader.hlsl", 0, 0, "GShader", "gs_5_0", 0, 0, 0, &sGS, 0, 0);
+
+    result = D3DX11CompileFromFile("spriteshader.hlsl", 0, 0, "PShader", "ps_5_0", 0, 0, 0, &sPS, 0, 0);
+
 
     // create the shader objects
     dev->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &pVS);
     dev->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &pPS);
 
-    // set the shader objects
-    devcon->VSSetShader(pVS, 0, 0);
-    devcon->PSSetShader(pPS, 0, 0);
+    dev->CreateVertexShader(sVS->GetBufferPointer(), sVS->GetBufferSize(), NULL, &pSpriteVS);
+    dev->CreateGeometryShader(sGS->GetBufferPointer(), sGS->GetBufferSize(), NULL, &pSpriteGS);
+    dev->CreatePixelShader(sPS->GetBufferPointer(), sPS->GetBufferSize(), NULL, &pSpritePS);
+
 
     // create the input element object
     D3D11_INPUT_ELEMENT_DESC ied[] =
@@ -453,9 +502,17 @@ void InitPipeline()
         {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0},
     };
 
+	// create the input element object
+    D3D11_INPUT_ELEMENT_DESC spriteied[] =
+    {
+        {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+	};
+
     // use the input element descriptions to create the input layout
     dev->CreateInputLayout(ied, 3, VS->GetBufferPointer(), VS->GetBufferSize(), &pLayout);
-    devcon->IASetInputLayout(pLayout);
+
+    dev->CreateInputLayout(spriteied, 1, sVS->GetBufferPointer(), sVS->GetBufferSize(), &pSpriteLayout);
+
 
     // create the constant buffer
     D3D11_BUFFER_DESC bd;
@@ -467,7 +524,14 @@ void InitPipeline()
 
     dev->CreateBuffer(&bd, NULL, &pCBuffer);
 
-    devcon->VSSetConstantBuffers(0, 1, &pCBuffer);
+	// Create sprite constant buffer
+    ZeroMemory(&bd, sizeof(bd));
+
+    bd.Usage = D3D11_USAGE_DEFAULT;
+    bd.ByteWidth = 80;    // 4 for each float, float 4x4 = 4 * 4 * 4 + float 3 eyepos
+    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
+    result = dev->CreateBuffer(&bd, NULL, &pSpriteCBuffer);
 }
 
 bool InitApex(ID3D11DeviceContext* devcon, ID3D11Device* dev)
@@ -483,6 +547,6 @@ void RecalculateView()
 	// create a view matrix
     D3DXMatrixLookAtLH(&mMatView,
 						&D3DXVECTOR3(mCam.x, mCam.y, mCam.z),    // the camera position
-                       &D3DXVECTOR3(0.0f, 0.0f, 0.0f),    // the look-at position
+                       &D3DXVECTOR3(0.0f, 0.5f, 0.0f),    // the look-at position
                        &D3DXVECTOR3(0.0f, 1.0f, 0.0f));   // the up direction
 }
